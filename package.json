@@ -4,6 +4,7 @@
   "private": true,
   "scripts": {
     "dev": "next dev | pino-pretty -c -m message",
+    "debug": "HTML_DEBUG=true npm run dev",
     "build": "next build",
     "start": "next start",
     "prettier": "prettier --check \"pages/**/*.{ts,tsx}\"",

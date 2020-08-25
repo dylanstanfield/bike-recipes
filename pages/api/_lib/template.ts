@@ -82,7 +82,8 @@ export const html = (config: Config): string => {
         <div>
             <div class="spacer">
             <div class="spacer">
-            <div class="heading">${emojify(md ? marked(text) : sanitize(text))}
+            <div class="heading">
+                ${emojify(md ? marked(text) : sanitize(text))}
             </div>
         </div>
     </body>
