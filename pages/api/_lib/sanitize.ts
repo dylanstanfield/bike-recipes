@@ -1,12 +1,12 @@
 const entityMap: { [key: string]: string } = {
-    "&": "&amp;",
-    "<": "&lt;",
-    ">": "&gt;",
-    '"': '&quot;',
-    "'": '&#39;',
-    "/": '&#x2F;'
+  '&': '&amp;',
+  '<': '&lt;',
+  '>': '&gt;',
+  '"': '&quot;',
+  "'": '&#39;',
+  '/': '&#x2F;',
 };
 
-export const sanitize = (html: string) => {
-    return String(html).replace(/[&<>"'\/]/g, key => entityMap[key]);
-}
+export const sanitize = (html: string): string => {
+  return String(html).replace(/[&<>"'/]/g, (key) => entityMap[key]);
+};

@@ -1,25 +1,25 @@
 import marked from 'marked';
+import twemoji from 'twemoji';
 import { sanitize } from './sanitize';
 import { Config } from './types';
-const twemoji = require('twemoji');
-const twOptions = { folder: 'svg', ext: '.svg' };
-const emojify = (text: string) => twemoji.parse(text, twOptions);
 
 import InterRegular from '../_fonts/Inter-Regular.woff2';
 import InterBold from '../_fonts/Inter-Bold.woff2';
 import VeraMono from '../_fonts/Vera-Mono.woff2';
 
-const css = (theme: string, fontSize: string): string => {
-    let background = 'white';
-    let foreground = 'black';
-    let radial = 'lightgray';
+const twOptions = { folder: 'svg', ext: '.svg' };
+const emojify = (text: string) => twemoji.parse(text, twOptions);
 
-    if (theme === 'dark') {
-        background = 'black';
-        foreground = 'white';
-        radial = 'dimgray';
-    }
-    return `
+const css = (theme: string, fontSize: string): string => {
+  let background = 'white';
+  let foreground = 'black';
+
+  if (theme === 'dark') {
+    background = 'black';
+    foreground = 'white';
+  }
+
+  return `
     @font-face {
         font-family: 'Inter';
         font-style:  normal;
@@ -40,8 +40,6 @@ const css = (theme: string, fontSize: string): string => {
       }
     body {
         background: ${background};
-        background-image: radial-gradient(circle at 25px 25px, ${radial} 2%, transparent 0%), radial-gradient(circle at 75px 75px, ${radial} 2%, transparent 0%);
-        background-size: 100px 100px;
         height: 100vh;
         display: flex;
         text-align: center;
@@ -65,14 +63,14 @@ const css = (theme: string, fontSize: string): string => {
         color: ${foreground};
         line-height: 1.8;
     }`;
-}
+};
 
 export const html = (config: Config): string => {
-    const { text, theme } = config;
-    const fontSize = '72px';
-    const md = false;
+  const { text, theme } = config;
+  const fontSize = '72px';
+  const md = false;
 
-    return `<!DOCTYPE html>
+  return `<!DOCTYPE html>
 <html>
     <meta charset="utf-8">
     <title>Generated Image</title>
@@ -84,11 +82,9 @@ export const html = (config: Config): string => {
         <div>
             <div class="spacer">
             <div class="spacer">
-            <div class="heading">${emojify(
-                md ? marked(text) : sanitize(text)
-            )}
+            <div class="heading">${emojify(md ? marked(text) : sanitize(text))}
             </div>
         </div>
     </body>
 </html>`;
-}
+};

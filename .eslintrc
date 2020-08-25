@@ -1,0 +1,99 @@
+{
+  "root": true,
+  "env": {
+    "jest": true
+  },
+  "parser": "@typescript-eslint/parser",
+  "parserOptions": {
+    "ecmaVersion": 2018,
+    "sourceType": "module",
+    "project": "./tsconfig.json",
+    "createDefaultProgram": true
+  },
+  "plugins": ["@typescript-eslint", "import", "jest"],
+  "extends": [
+    "airbnb-base",
+    "eslint:recommended",
+    "plugin:@typescript-eslint/recommended",
+    "plugin:import/typescript",
+    "prettier",
+    "prettier/@typescript-eslint"
+  ],
+  "ignorePatterns": ["**/node_modules/**", "**/dist/**"],
+  "rules": {
+    // Very slow rules that don't provide much value that TSC can't catch
+    "import/no-unresolved": "off",
+    "import/no-cycle": "off",
+
+    // Prettier conflicts
+    // "indent": ["error", 2, { "MemberExpressions": 1 }],
+    "@typescript-eslint/naming-convention": [
+      "warn",
+      {
+        "selector": "variableLike",
+        // Variables should be camelCase or UPPER_CASE (constants) or PascalCase (components, classes etc)
+        "format": ["camelCase", "UPPER_CASE", "PascalCase"]
+      }
+    ],
+    "@typescript-eslint/ban-types": "warn",
+    "@typescript-eslint/ban-ts-comment": "warn",
+    // Inferencing types is okay here
+    "@typescript-eslint/explicit-function-return-type": [
+      "off",
+      {
+        "allowExpressions": true,
+        "allowTypedFunctionExpressions": true
+      }
+    ],
+    "no-empty-function": 0,
+    "@typescript-eslint/no-empty-function": 0,
+    "func-names": ["error", "always"],
+    "max-len": [
+      "error",
+      120,
+      2,
+      {
+        "ignoreComments": false,
+        "ignoreRegExpLiterals": true,
+        "ignoreStrings": true,
+        "ignoreTemplateLiterals": true,
+        "ignoreUrls": true
+      }
+    ],
+
+    // Handled much, much better by a type system
+    "consistent-return": "off",
+    // Typescript can do exhaustiveness checking with switch/case, making it so
+    // that you can cause a compile error if someone adds a new enum variant.
+    "default-case": "off",
+
+    // Just not practical
+    "class-methods-use-this": 0,
+    // Standard Nest class definition
+    "import/prefer-default-export": 0,
+    "import/extensions": [
+      "error",
+      "ignorePackages",
+      {
+        "js": "never",
+        "jsx": "never",
+        "ts": "never",
+        "tsx": "never"
+      }
+    ]
+  },
+  "settings": {
+    "import/extensions": [".ts", ".tsx"],
+    "import/parsers": {
+      "@typescript-eslint/parser": [".ts", ".tsx"]
+    }
+  },
+  "overrides": [
+    {
+      "files": ["*.tsx"],
+      "rules": {
+        "@typescript-eslint/no-unused-vars": "off"
+      }
+    }
+  ]
+}
