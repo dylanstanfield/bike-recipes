@@ -7,6 +7,6 @@ const entityMap: { [key: string]: string } = {
     "/": '&#x2F;'
 };
 
-export function sanitizeHtml(html: string) {
+export const sanitize = (html: string) => {
     return String(html).replace(/[&<>"'\/]/g, key => entityMap[key]);
 }

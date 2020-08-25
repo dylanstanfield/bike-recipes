@@ -1,6 +1,6 @@
 import marked from 'marked';
-import { sanitizeHtml } from './sanitizer';
-import { ParsedRequest } from './types';
+import { sanitize } from './sanitize';
+import { Config } from './types';
 const twemoji = require('twemoji');
 const twOptions = { folder: 'svg', ext: '.svg' };
 const emojify = (text: string) => twemoji.parse(text, twOptions);
@@ -9,7 +9,7 @@ import InterRegular from '../_fonts/Inter-Regular.woff2';
 import InterBold from '../_fonts/Inter-Bold.woff2';
 import VeraMono from '../_fonts/Vera-Mono.woff2';
 
-function getCss(theme: string, fontSize: string) {
+const css = (theme: string, fontSize: string): string => {
     let background = 'white';
     let foreground = 'black';
     let radial = 'lightgray';
@@ -48,30 +48,6 @@ function getCss(theme: string, fontSize: string) {
         align-items: center;
         justify-content: center;
     }
-    code {
-        color: #D400FF;
-        font-family: 'Vera';
-        white-space: pre-wrap;
-        letter-spacing: -5px;
-    }
-    code:before, code:after {
-        content: '\`';
-    }
-    .logo-wrapper {
-        display: flex;
-        align-items: center;
-        align-content: center;
-        justify-content: center;
-        justify-items: center;
-    }
-    .logo {
-        margin: 0 75px;
-    }
-    .plus {
-        color: #BBB;
-        font-family: Times New Roman, Verdana;
-        font-size: 100px;
-    }
     .spacer {
         margin: 150px;
     }
@@ -83,52 +59,36 @@ function getCss(theme: string, fontSize: string) {
     }
     
     .heading {
-        font-family: 'Inter', sans-serif;
-        font-size: ${sanitizeHtml(fontSize)};
+        font-family: 'Vera', sans-serif;
+        font-size: ${sanitize(fontSize)};
         font-style: normal;
         color: ${foreground};
         line-height: 1.8;
     }`;
 }
 
-export function getHtml(parsedReq: ParsedRequest) {
-    const { text, theme, md, fontSize, images, widths, heights } = parsedReq;
+export const html = (config: Config): string => {
+    const { text, theme } = config;
+    const fontSize = '72px';
+    const md = false;
+
     return `<!DOCTYPE html>
 <html>
     <meta charset="utf-8">
     <title>Generated Image</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <style>
-        ${getCss(theme, fontSize)}
+        ${css(theme, fontSize)}
     </style>
     <body>
         <div>
             <div class="spacer">
-            <div class="logo-wrapper">
-                ${images.map((img, i) =>
-                    getPlusSign(i) + getImage(img, widths[i], heights[i])
-                ).join('')}
-            </div>
             <div class="spacer">
             <div class="heading">${emojify(
-                md ? marked(text) : sanitizeHtml(text)
+                md ? marked(text) : sanitize(text)
             )}
             </div>
         </div>
     </body>
 </html>`;
-}
-
-function getImage(src: string, width ='auto', height = '225') {
-    return `<img
-        class="logo"
-        alt="Generated Image"
-        src="${sanitizeHtml(src)}"
-        width="${sanitizeHtml(width)}"
-        height="${sanitizeHtml(height)}"
-    />`
-}
-
-function getPlusSign(i: number) {
-    return i === 0 ? '' : '<div class="plus">+</div>';
 }
