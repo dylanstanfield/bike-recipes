@@ -1,7 +1,8 @@
-import { NextApiRequest } from 'next';
-import { parse } from 'url';
+import { NextApiRequest } from 'next'
+import { parse } from 'url'
+import AJV from 'ajv'
 
-import { Config } from './types';
+import { Config, ConfigSchema } from './models/Config'
 
 // let thing = {
 //     theme: 'dark',
@@ -9,20 +10,24 @@ import { Config } from './types';
 //     text: 'Hello world!'
 // }
 
-export function parseConfig(req: NextApiRequest): Config {
-  const { query } = parse(req.url || '/', true);
+const validator = new AJV({ allErrors: true })
+
+export function parseConfig(req: NextApiRequest): { config: Config; valid: boolean; errors?: AJV.ErrorObject[] } {
+  const { query } = parse(req.url || '/', true)
 
   if (Array.isArray(query.c) || !query.c) {
-    throw new Error('config is invalid');
+    throw new Error('config is invalid')
   }
 
-  const config = JSON.parse(query.c);
+  const config = JSON.parse(query.c)
 
   if (!config) {
-    throw new Error('config is invalid');
+    throw new Error('config is invalid')
   }
 
-  // todo: json validate
+  const check = validator.compile(ConfigSchema)
+  const valid = Boolean(check(config))
+  const errors = check.errors || undefined
 
-  return config;
+  return { config, valid, errors }
 }

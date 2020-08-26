@@ -1,22 +1,22 @@
-import marked from 'marked';
-import twemoji from 'twemoji';
-import { sanitize } from './sanitize';
-import { Config } from './types';
+import marked from 'marked'
+import twemoji from 'twemoji'
+import { sanitize } from './sanitize'
+import { Config } from './models/Config'
 
-import InterRegular from '../_fonts/Inter-Regular.woff2';
-import InterBold from '../_fonts/Inter-Bold.woff2';
-import VeraMono from '../_fonts/Vera-Mono.woff2';
+import InterRegular from '../_fonts/Inter-Regular.woff2'
+import InterBold from '../_fonts/Inter-Bold.woff2'
+import VeraMono from '../_fonts/Vera-Mono.woff2'
 
-const twOptions = { folder: 'svg', ext: '.svg' };
-const emojify = (text: string) => twemoji.parse(text, twOptions);
+const twOptions = { folder: 'svg', ext: '.svg' }
+const emojify = (text: string) => twemoji.parse(text, twOptions)
 
 const css = (theme: string, fontSize: string): string => {
-  let background = 'white';
-  let foreground = 'black';
+  let background = 'white'
+  let foreground = 'black'
 
   if (theme === 'dark') {
-    background = 'black';
-    foreground = 'white';
+    background = 'black'
+    foreground = 'white'
   }
 
   return `
@@ -62,13 +62,13 @@ const css = (theme: string, fontSize: string): string => {
         font-style: normal;
         color: ${foreground};
         line-height: 1.8;
-    }`;
-};
+    }`
+}
 
 export const html = (config: Config): string => {
-  const { text, theme } = config;
-  const fontSize = '72px';
-  const md = false;
+  const { text, theme } = config
+  const fontSize = '72px'
+  const md = false
 
   return `<!DOCTYPE html>
 <html>
@@ -87,5 +87,5 @@ export const html = (config: Config): string => {
             </div>
         </div>
     </body>
-</html>`;
-};
+</html>`
+}
