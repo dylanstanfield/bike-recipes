@@ -1,7 +1,7 @@
 import marked from 'marked'
 import twemoji from 'twemoji'
 import { sanitize } from './sanitize'
-import { Config } from './models/Config'
+import { Config } from './schema/Config'
 
 import InterRegular from '../_fonts/Inter-Regular.woff2'
 import InterBold from '../_fonts/Inter-Bold.woff2'

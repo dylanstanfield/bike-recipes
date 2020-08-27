@@ -1,9 +1,10 @@
 import { NextApiRequest, NextApiResponse } from 'next'
 import pino from 'pino-http'
+import { parse } from 'url'
 
-import { parseConfig } from './_lib/parse'
 import { html } from './_lib/template'
 import { screenshot } from './_lib/screenshot'
+import { validateConfig } from './_lib/schema/Config'
 
 const logger = pino()
 const isDev = !process.env.AWS_REGION
@@ -13,9 +14,16 @@ export default async (req: NextApiRequest, res: NextApiResponse): Promise<void> 
   logger(req, res)
 
   try {
-    const { config, errors } = parseConfig(req)
+    const { query } = parse(req.url || '/', true)
 
-    if (errors) {
+    if (Array.isArray(query.c) || !query.c) {
+      throw new Error('config is invalid')
+    }
+
+    const config = JSON.parse(query.c)
+    const { valid, errors } = await validateConfig(config)
+
+    if (!valid) {
       res.statusCode = 400
       res.setHeader('Content-Type', 'text/html')
       res.end(`<h1>Invalid Request</h1><pre>${JSON.stringify(errors, null, 4)}</pre>`)
