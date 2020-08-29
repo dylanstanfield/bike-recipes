@@ -1,21 +1,17 @@
-import { object, string } from 'yup'
-
-const FILE_TYPES = ['png', 'jpeg'] as const
-export type FileType = typeof FILE_TYPES[number]
-
-const THEMES = ['light', 'dark'] as const
-export type Theme = typeof THEMES[number]
-
-export interface Config {
-  fileType: FileType
-  text: string
-  theme: Theme
-}
+import { object, string, array } from 'yup'
+import { FILE_TYPES, THEMES, COMPONENTS, Config } from '../../../../types'
 
 const schema = object().shape({
   fileType: string().required().oneOf(FILE_TYPES),
-  text: string().required(),
   theme: string().required().oneOf(THEMES),
+  components: array()
+    .required()
+    .of(
+      object().shape({
+        type: string().required().oneOf(COMPONENTS),
+        text: string().required(),
+      }),
+    ),
 })
 
 export const validateConfig = async (config: Config): Promise<{ valid: boolean; errors?: string[] }> => {
