@@ -1,10 +1,9 @@
 export const COMPONENTS = [
   'frame',
-  'bars',
+  'handlebars',
   'wheels',
   'tires',
   'stem',
-  'headset',
   'bottom_bracket',
   'chain',
   'saddle',
