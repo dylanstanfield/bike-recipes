@@ -3,7 +3,8 @@ import { Theme } from './Theme'
 import { FileType } from './FileType'
 
 export interface Config {
-  fileType: FileType
-  theme: Theme
-  components: Component[]
+  // fileType: FileType
+  // theme: Theme
+  name: string
+  components: string[]
 }

@@ -68,59 +68,19 @@ const css = (theme: string, fontSize: string): string => {
 // ${emojify(md ? marked(text) : sanitize(text))}
 // </div>
 
-// const c: Config = {
-const c = {
-  fileType: 'png',
-  theme: 'dark',
-  components: [
-    {
-      type: 'frame',
-      text: 'Crust Bombora',
-    },
-    {
-      type: 'bars',
-      text: 'Nitto x Crust Shaka bar',
-    },
-    {
-      type: 'wheels',
-      text: 'Mavic Allroad Elite UST Disc',
-    },
-    {
-      type: 'tires',
-      text: 'Ultradynamico Cava JFF',
-    },
-    {
-      type: 'brakes',
-      text: 'Paul Components Klampers',
-    },
-    {
-      type: 'cranks',
-      text: 'Shimano GRX',
-    },
-    {
-      type: 'chainrings',
-      text: 'Wolftooth 1X 44 Tooth',
-    },
-    {
-      type: 'rear_derailleur',
-      text: 'Shimano Ultegra 11 Speed',
-    },
-  ],
-}
-
 export const html = (config: Config): string => {
-  const { theme, components } = config
-  const fontSize = '36px'
+  const { components } = config
+  const fontSize = '100px'
 
   return `<!DOCTYPE html>
 <html>
     <meta charset="utf-8">
     <title>Generated Image</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <style>${css(theme, fontSize)}</style>
+    <style>${css('dark', fontSize)}</style>
     <body>
         <div>
-            ${components.map(({ type, text }) => `<div class="heading">${type}: ${sanitize(text)}</div>`)}
+            ${components.map((component) => `<div class="heading">${sanitize(component)}</div>`)}
         </div>
     </body>
 </html>`

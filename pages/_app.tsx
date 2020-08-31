@@ -1,20 +1,15 @@
 import { AppProps } from 'next/app'
-import { Layout } from 'antd'
+import { Flex, Box } from 'rebass'
 
-import 'antd/dist/antd.css'
 import '../styles/globals.css'
-
-const { Header, Footer, Content } = Layout
 
 const MyApp: React.FC<AppProps> = ({ Component, pageProps }) => {
   return (
-    <Layout>
-      <Header>BIKE RECIPES</Header>
-      <Content>
+    <Flex justifyContent="center">
+      <Box flex={1} maxWidth="800px" paddingX={2}>
         <Component {...pageProps} />
-      </Content>
-      <Footer>Footer</Footer>
-    </Layout>
+      </Box>
+    </Flex>
   )
 }
 
