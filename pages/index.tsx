@@ -1,9 +1,14 @@
-import Head from 'next/head'
 import { useState } from 'react'
-
-import { Box, Flex, Button, Heading, Image } from 'rebass'
-import { Label, Input, Select, Textarea, Radio, Checkbox } from '@rebass/forms'
+import { Container, Typography, Button } from '@material-ui/core'
+import Grid from '@material-ui/core/Grid'
+import Box from '@material-ui/core/Box'
 import { v4 as uuid } from 'uuid'
+import AddCircleTwoToneIcon from '@material-ui/icons/AddCircleTwoTone'
+
+import { FormLabel } from '../components/FormLabel'
+import { FormControl } from '../components/FormControl'
+import { TextField } from '../components/TextField'
+import { ComponentInput } from '../components/ComponentInput'
 import { Config } from '../types'
 
 export default function Home(): React.ReactElement {
@@ -44,45 +49,41 @@ export default function Home(): React.ReactElement {
   }
 
   return (
-    <div>
-      <Head>
-        <title>Bike Recipes</title>
-        <link rel="icon" href="/favicon.ico" />
-      </Head>
-      <Heading>BIKE RECIPES</Heading>
-      <Box as="form" onSubmit={(e) => e.preventDefault()} py={3}>
-        <Flex mx={-2} mb={3}>
-          <Box width={1} px={2}>
-            <Label htmlFor="name">Bike Name</Label>
-            <Input id="name" name="name" placeholder="m'bike" onChange={({ target }) => setName(target.value)} />
+    <Container maxWidth="lg">
+      <Typography variant="h1" component="h1">
+        Bike Recipes
+      </Typography>
+      <Grid container spacing={3}>
+        <Grid item md={4} xs={12}>
+          <Box style={{ minHeight: '500px' }}>
+            <form>
+              <FormControl>
+                <FormLabel>Name</FormLabel>
+                <TextField variant="outlined" fullWidth />
+              </FormControl>
+
+              <FormControl>
+                <FormLabel>Components</FormLabel>
+                {components.map((component, index) => (
+                  <ComponentInput key={component.id} remove={remove} insert={insert} index={index} />
+                ))}
+                <Button
+                  onClick={() => insert(components.length - 1)}
+                  style={{ fontWeight: 900, letterSpacing: '0.1em', fontSize: 14 }}
+                  size="large"
+                  color="primary"
+                  startIcon={<AddCircleTwoToneIcon style={{ marginRight: 8 }} />}
+                >
+                  Add Component
+                </Button>
+              </FormControl>
+            </form>
           </Box>
-        </Flex>
-        {components.map((component, index) => (
-          <Flex mx={-2} mb={3} key={component.id}>
-            <Box width={1} px={2}>
-              <Input
-                id={`componentDescription${index}`}
-                name={`componentDescription${index}`}
-                defaultValue={component.description}
-                placeholder="Frame? Handlebars? Tires?"
-                onChange={({ target }) => change(target.value, index)}
-              />
-            </Box>
-            <Button onClick={() => insert(index)}>+</Button>
-            <Button marginX={2} onClick={() => remove(index)} disabled={components.length <= 1}>
-              -
-            </Button>
-          </Flex>
-        ))}
-      </Box>
-      <Button onClick={() => submit()}>Process</Button>
-      <Image
-        src={src}
-        sx={{
-          width: ['100%', '50%'],
-          borderRadius: 8,
-        }}
-      />
-    </div>
+        </Grid>
+        <Grid item md={8} xs={12}>
+          <Box style={{ background: 'blue', minHeight: '500px' }}></Box>
+        </Grid>
+      </Grid>
+    </Container>
   )
 }

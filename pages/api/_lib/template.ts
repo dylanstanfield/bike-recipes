@@ -1,5 +1,5 @@
-// import marked from 'marked'
-// import twemoji from 'twemoji'
+import twemoji from 'twemoji'
+
 import { sanitize } from './sanitize'
 
 import InterRegular from '../_fonts/Inter-Regular.woff2'
@@ -7,8 +7,8 @@ import InterBold from '../_fonts/Inter-Bold.woff2'
 import VeraMono from '../_fonts/Vera-Mono.woff2'
 import { Config } from '../../../types'
 
-// const twOptions = { folder: 'svg', ext: '.svg' }
-// const emojify = (text: string) => twemoji.parse(text, twOptions)
+const twOptions = { folder: 'svg', ext: '.svg' }
+const emojify = (text: string) => twemoji.parse(text, twOptions)
 
 const css = (theme: string, fontSize: string): string => {
   let background = 'white'
@@ -64,10 +64,6 @@ const css = (theme: string, fontSize: string): string => {
     }`
 }
 
-// <div class="heading">
-// ${emojify(md ? marked(text) : sanitize(text))}
-// </div>
-
 export const html = (config: Config): string => {
   const { components } = config
   const fontSize = '100px'
@@ -80,7 +76,7 @@ export const html = (config: Config): string => {
     <style>${css('dark', fontSize)}</style>
     <body>
         <div>
-            ${components.map((component) => `<div class="heading">${sanitize(component)}</div>`)}
+            ${components.map((component) => `<div class="heading">${emojify(sanitize(component))}</div>`)}
         </div>
     </body>
 </html>`
