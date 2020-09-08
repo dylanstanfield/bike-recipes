@@ -3,7 +3,7 @@ import { makeStyles, Theme } from '@material-ui/core'
 
 const useStyles = makeStyles((theme: Theme) => ({
   formControl: {
-    marginBottom: theme.spacing(4),
+    margin: theme.spacing(1, 0),
   },
 }))
 

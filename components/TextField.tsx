@@ -5,6 +5,14 @@ const useStyles = makeStyles((theme: Theme) => ({
   input: {
     marginBottom: theme.spacing(2),
   },
+  label: {
+    fontWeight: 900,
+    textTransform: 'uppercase',
+    fontSize: 14,
+    letterSpacing: '0.1em',
+    background: 'white',
+    paddingRight: theme.spacing(0.5),
+  },
 }))
 
 export const TextField: React.FC<TextFieldProps> = (props) => {
@@ -13,10 +21,10 @@ export const TextField: React.FC<TextFieldProps> = (props) => {
 
   return (
     <MuiTextField
-      className={classes.input}
-      size="small"
       {...rest}
-      InputProps={{ style: { fontWeight: 900, fontSize: '14px' }, ...InputProps }}
+      className={classes.input}
+      InputLabelProps={{ className: classes.label }}
+      InputProps={{ style: { fontWeight: 900, fontSize: '16px' }, ...InputProps }}
     />
   )
 }

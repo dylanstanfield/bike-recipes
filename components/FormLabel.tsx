@@ -7,7 +7,8 @@ const useStyles = makeStyles((theme: Theme) => ({
     fontSize: 12,
     textTransform: 'uppercase',
     letterSpacing: '0.1em',
-    marginBottom: theme.spacing(2),
+    paddingBottom: theme.spacing(2),
+    display: 'block',
   },
 }))
 

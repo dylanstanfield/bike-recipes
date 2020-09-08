@@ -3,12 +3,13 @@ import { Container, Typography, Button } from '@material-ui/core'
 import Grid from '@material-ui/core/Grid'
 import Box from '@material-ui/core/Box'
 import { v4 as uuid } from 'uuid'
-import AddCircleTwoToneIcon from '@material-ui/icons/AddCircleTwoTone'
+import AddCircleOutlineOutlinedIcon from '@material-ui/icons/AddCircleOutlineOutlined'
 
 import { FormLabel } from '../components/FormLabel'
 import { FormControl } from '../components/FormControl'
 import { TextField } from '../components/TextField'
 import { ComponentInput } from '../components/ComponentInput'
+import { FormSection } from '../components/FormSection'
 import { Config } from '../types'
 
 export default function Home(): React.ReactElement {
@@ -58,8 +59,11 @@ export default function Home(): React.ReactElement {
           <Box style={{ minHeight: '500px' }}>
             <form>
               <FormControl>
-                <FormLabel>Name</FormLabel>
-                <TextField variant="outlined" fullWidth />
+                <FormLabel>Information</FormLabel>
+                <FormSection>
+                  <TextField label="Build Name" variant="outlined" fullWidth />
+                  {/* <TextField label="Author" variant="outlined" fullWidth /> */}
+                </FormSection>
               </FormControl>
 
               <FormControl>
@@ -72,7 +76,7 @@ export default function Home(): React.ReactElement {
                   style={{ fontWeight: 900, letterSpacing: '0.1em', fontSize: 14 }}
                   size="large"
                   color="primary"
-                  startIcon={<AddCircleTwoToneIcon style={{ marginRight: 8 }} />}
+                  startIcon={<AddCircleOutlineOutlinedIcon style={{ marginRight: 8 }} />}
                 >
                   Add Component
                 </Button>

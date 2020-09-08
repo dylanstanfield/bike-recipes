@@ -1,37 +1,162 @@
-export const COMPONENTS = [
-  'frame',
-  'handlebars',
-  'wheels',
-  'tires',
-  'stem',
-  'bottom_bracket',
-  'chain',
-  'saddle',
-  'seatpost',
-  'seatpost_clamp',
-  'bar_tape',
-  'grips',
-  'fork',
-  'headset',
-  'chainrings',
-  'pedals',
-  'front_derailleur',
-  'rear_derailleur',
-  'cassette',
-  'cog',
-  'cranks',
-  'spokes',
-  'hubs',
-  'rim',
-  'valves',
-  'brakes',
-  'basket',
-  'front_rack',
-  'rear_rack',
-  'bag',
-] as const
+export const COMPONENT_CATEGORIES = ['drivetrain', 'frame_parts', 'wheels', 'cockpit', 'touring'] as const
 
 export type Component = {
-  type: typeof COMPONENTS[number]
-  text: string
+  type: string
+  category: typeof COMPONENT_CATEGORIES[number]
 }
+
+export const COMPONENTS: Component[] = [
+  // Frame parts
+  {
+    type: 'frame',
+    category: 'frame_parts',
+  },
+  {
+    type: 'fork',
+    category: 'frame_parts',
+  },
+  {
+    type: 'axels',
+    category: 'frame_parts',
+  },
+  {
+    type: 'quick_release_skewers',
+    category: 'frame_parts',
+  },
+
+  // Drivetrain
+  {
+    type: 'front_derailleur',
+    category: 'drivetrain',
+  },
+  {
+    type: 'rear_derailleur',
+    category: 'drivetrain',
+  },
+  {
+    type: 'pedals',
+    category: 'drivetrain',
+  },
+  {
+    type: 'cassette',
+    category: 'drivetrain',
+  },
+  {
+    type: 'chainrings',
+    category: 'drivetrain',
+  },
+  {
+    type: 'cog',
+    category: 'drivetrain',
+  },
+  {
+    type: 'cranks',
+    category: 'drivetrain',
+  },
+  {
+    type: 'chain',
+    category: 'drivetrain',
+  },
+  {
+    type: 'bottom_bracket',
+    category: 'drivetrain',
+  },
+
+  // Wheels
+  {
+    type: 'wheels',
+    category: 'wheels',
+  },
+  {
+    type: 'hubs',
+    category: 'wheels',
+  },
+  {
+    type: 'spokes',
+    category: 'wheels',
+  },
+  {
+    type: 'valves',
+    category: 'wheels',
+  },
+  {
+    type: 'tires',
+    category: 'wheels',
+  },
+  {
+    type: 'rims',
+    category: 'wheels',
+  },
+  {
+    type: 'brakes',
+    category: 'wheels',
+  },
+  {
+    type: 'brakes',
+    category: 'wheels',
+  },
+  {
+    type: 'brake_rotors',
+    category: 'wheels',
+  },
+
+  // Cockpit
+  {
+    type: 'stem',
+    category: 'cockpit',
+  },
+  {
+    type: 'handlebars',
+    category: 'cockpit',
+  },
+  {
+    type: 'handlebar_tape',
+    category: 'cockpit',
+  },
+  {
+    type: 'grips',
+    category: 'cockpit',
+  },
+  {
+    type: 'headset',
+    category: 'cockpit',
+  },
+  {
+    type: 'seatpost',
+    category: 'cockpit',
+  },
+  {
+    type: 'seatpost_clamp',
+    category: 'cockpit',
+  },
+  {
+    type: 'saddle',
+    category: 'cockpit',
+  },
+  {
+    type: 'shifters',
+    category: 'cockpit',
+  },
+  {
+    type: 'brake_levers',
+    category: 'cockpit',
+  },
+
+  // Touring
+  {
+    type: 'front_rack',
+    category: 'touring',
+  },
+  {
+    type: 'rear_rack',
+    category: 'touring',
+  },
+  {
+    type: 'basket',
+    category: 'touring',
+  },
+  {
+    type: 'bag',
+    category: 'touring',
+  },
+]
