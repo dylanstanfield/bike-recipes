@@ -1,12 +1,24 @@
 import React, { useState } from 'react'
 import IconButton from '@material-ui/core/IconButton'
 import Tooltip from '@material-ui/core/Tooltip'
+
+import {
+  WindowMinimize,
+  ChevronDoubleDown,
+  ChevronDoubleUp,
+  ShapeRectanglePlus,
+  ArrowCollapseVertical,
+  DotsVertical,
+  UnfoldLessHorizontal,
+  UnfoldMoreHorizontal,
+  ArrowDownThinCircleOutline,
+} from 'mdi-material-ui'
 import DeleteOutlineIcon from '@material-ui/icons/DeleteOutline'
 import FlipToFrontTwoToneIcon from '@material-ui/icons/FlipToFrontTwoTone'
 import FlipToBackTwoToneIcon from '@material-ui/icons/FlipToBackTwoTone'
 import ControlPointDuplicateIcon from '@material-ui/icons/ControlPointDuplicate'
 import Autocomplete, { AutocompleteRenderGroupParams } from '@material-ui/lab/Autocomplete'
-import { makeStyles, Theme, FormControl, Box, Typography, ListSubheader } from '@material-ui/core'
+import { makeStyles, Theme, FormControl, Box, Typography, ListSubheader, Divider } from '@material-ui/core'
 
 import { COMPONENTS } from '../types'
 import { TextField } from './TextField'
@@ -28,9 +40,11 @@ const componentOptions = COMPONENTS.map((comp) => ({
 }))
 
 interface ComponentInputProps {
+  move: (index: number, direction: 'up' | 'down') => void
   insert: (index: number) => void
   remove: (index: number) => void
   index: number
+  numComponents: number
 }
 
 const useStyles = makeStyles((theme: Theme) => ({
@@ -51,8 +65,8 @@ const useStyles = makeStyles((theme: Theme) => ({
     fontWeight: 900,
     fontSize: 16,
   },
-  rotate90: {
-    transform: 'rotate(90deg)',
+  rotate180: {
+    transform: 'rotate(180deg)',
   },
   optionGroupHeader: {
     textTransform: 'uppercase',
@@ -64,8 +78,9 @@ const useStyles = makeStyles((theme: Theme) => ({
   },
 }))
 
-export const ComponentInput: React.FC<ComponentInputProps> = ({ index, insert, remove }) => {
+export const ComponentInput: React.FC<ComponentInputProps> = ({ index, insert, remove, move, numComponents }) => {
   const classes = useStyles()
+  const [collapsed, setCollapsed] = useState(false)
 
   return (
     <FormSection>
@@ -92,27 +107,51 @@ export const ComponentInput: React.FC<ComponentInputProps> = ({ index, insert, r
       />
       <TextField label="Description" variant="outlined" fullWidth />
       <Box display="flex" justifyContent="space-between">
-        <Box>
+        <Box display="flex">
+          <Tooltip title={collapsed ? 'Expand' : 'Collapse'}>
+            <IconButton className={classes.buttonLeft} size="small" onClick={() => setCollapsed(!collapsed)}>
+              {/* <ArrowCollapseVertical /> */}
+              {collapsed && <UnfoldMoreHorizontal />}
+              {!collapsed && <UnfoldLessHorizontal />}
+            </IconButton>
+          </Tooltip>
+          <Divider orientation="vertical" flexItem className={classes.buttonLeft} />
           <Tooltip title="Move Up">
-            <IconButton className={classes.buttonLeft} size="small" color="primary" onClick={() => {}}>
-              <FlipToFrontTwoToneIcon />
+            <IconButton
+              disabled={index === 0}
+              className={classes.buttonLeft}
+              size="small"
+              onClick={() => move(index, 'up')}
+            >
+              <ArrowDownThinCircleOutline className={classes.rotate180} />
             </IconButton>
           </Tooltip>
           <Tooltip title="Move Down">
-            <IconButton className={classes.buttonLeft} size="small" color="primary" onClick={() => {}}>
-              <FlipToBackTwoToneIcon />
+            <IconButton
+              disabled={index + 1 >= numComponents}
+              className={classes.buttonLeft}
+              size="small"
+              onClick={() => move(index, 'down')}
+            >
+              <ArrowDownThinCircleOutline />
+            </IconButton>
+          </Tooltip>
+          <Divider orientation="vertical" flexItem className={classes.buttonLeft} />
+          <Tooltip title="Insert After">
+            <IconButton className={classes.buttonLeft} size="small" onClick={() => insert(index)}>
+              <ShapeRectanglePlus />
+            </IconButton>
+          </Tooltip>
+          <Tooltip title="Delete">
+            <IconButton className={classes.buttonLeft} size="small" onClick={() => remove(index)}>
+              <DeleteOutlineIcon />
             </IconButton>
           </Tooltip>
         </Box>
         <Box>
-          <Tooltip title="Add After">
-            <IconButton className={classes.buttonRight} size="small" onClick={() => insert(index)}>
-              <ControlPointDuplicateIcon fontSize="small" className={classes.rotate90} />
-            </IconButton>
-          </Tooltip>
           <Tooltip title="Delete">
-            <IconButton className={classes.buttonRight} size="small" onClick={() => remove(index)}>
-              <DeleteOutlineIcon />
+            <IconButton className={classes.buttonRight} size="small" onClick={() => {}}>
+              <DotsVertical />
             </IconButton>
           </Tooltip>
         </Box>

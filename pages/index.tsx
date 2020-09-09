@@ -28,6 +28,20 @@ export default function Home(): React.ReactElement {
     )
   }
 
+  const move = (index: number, direction: 'up' | 'down') => {
+    const copy = [...components]
+
+    if (direction === 'up') {
+      copy.splice(index - 1, 0, copy.splice(index, 1)[0])
+    }
+
+    if (direction === 'down') {
+      copy.splice(index + 1, 0, copy.splice(index, 1)[0])
+    }
+
+    setComponents(copy)
+  }
+
   const insert = (index: number) => {
     const copy = [...components]
     copy.splice(index + 1, 0, { description: '', id: uuid() })
@@ -62,14 +76,21 @@ export default function Home(): React.ReactElement {
                 <FormLabel>Information</FormLabel>
                 <FormSection>
                   <TextField label="Build Name" variant="outlined" fullWidth />
-                  {/* <TextField label="Author" variant="outlined" fullWidth /> */}
+                  <TextField label="Your Name" variant="outlined" fullWidth />
                 </FormSection>
               </FormControl>
 
               <FormControl>
                 <FormLabel>Components</FormLabel>
                 {components.map((component, index) => (
-                  <ComponentInput key={component.id} remove={remove} insert={insert} index={index} />
+                  <ComponentInput
+                    key={component.id}
+                    move={move}
+                    remove={remove}
+                    insert={insert}
+                    index={index}
+                    numComponents={components.length}
+                  />
                 ))}
                 <Button
                   onClick={() => insert(components.length - 1)}

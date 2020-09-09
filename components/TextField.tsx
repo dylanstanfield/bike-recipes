@@ -3,7 +3,7 @@ import { makeStyles, Theme } from '@material-ui/core'
 
 const useStyles = makeStyles((theme: Theme) => ({
   input: {
-    marginBottom: theme.spacing(2),
+    marginBottom: theme.spacing(1.5),
   },
   label: {
     fontWeight: 900,
@@ -22,6 +22,7 @@ export const TextField: React.FC<TextFieldProps> = (props) => {
   return (
     <MuiTextField
       {...rest}
+      size="small"
       className={classes.input}
       InputLabelProps={{ className: classes.label }}
       InputProps={{ style: { fontWeight: 900, fontSize: '16px' }, ...InputProps }}
