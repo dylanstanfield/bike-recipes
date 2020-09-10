@@ -12,6 +12,9 @@ import {
   UnfoldLessHorizontal,
   UnfoldMoreHorizontal,
   ArrowDownThinCircleOutline,
+  LockOpenOutline,
+  LockOutline,
+  LockOpenVariantOutline,
 } from 'mdi-material-ui'
 import DeleteOutlineIcon from '@material-ui/icons/DeleteOutline'
 import FlipToFrontTwoToneIcon from '@material-ui/icons/FlipToFrontTwoTone'
@@ -20,24 +23,36 @@ import ControlPointDuplicateIcon from '@material-ui/icons/ControlPointDuplicate'
 import Autocomplete, { AutocompleteRenderGroupParams } from '@material-ui/lab/Autocomplete'
 import { makeStyles, Theme, FormControl, Box, Typography, ListSubheader, Divider } from '@material-ui/core'
 
-import { COMPONENTS } from '../types'
+import { Component, COMPONENTS } from '../types'
 import { TextField } from './TextField'
 import { FormSection } from './FormSection'
 
-const componentOptions = COMPONENTS.map((comp) => ({
-  label: comp.type
-    .split('_')
-    .map((str) => str.charAt(0).toUpperCase() + str.slice(1))
-    .join(' '),
-  value: {
-    type: comp.type,
-    category: comp.category,
-    categoryLabel: comp.category
+interface ComponentOption {
+  label: string
+  value: Component & { categoryLabel: string }
+}
+
+const initialComponentOption: ComponentOption = {
+  label: '',
+  value: { category: 'drivetrain', type: '', categoryLabel: '' },
+}
+
+const componentOptions = COMPONENTS.map(
+  (comp): ComponentOption => ({
+    label: comp.type
       .split('_')
       .map((str) => str.charAt(0).toUpperCase() + str.slice(1))
       .join(' '),
-  },
-}))
+    value: {
+      type: comp.type,
+      category: comp.category,
+      categoryLabel: comp.category
+        .split('_')
+        .map((str) => str.charAt(0).toUpperCase() + str.slice(1))
+        .join(' '),
+    },
+  }),
+)
 
 interface ComponentInputProps {
   move: (index: number, direction: 'up' | 'down') => void
@@ -76,11 +91,38 @@ const useStyles = makeStyles((theme: Theme) => ({
     background: 'white',
     top: -theme.spacing(1), // fixes bug
   },
+  collapsedContainer: {},
+  collapsedDescription: {
+    fontWeight: 900,
+    flex: 1,
+    marginRight: theme.spacing(1),
+  },
 }))
 
 export const ComponentInput: React.FC<ComponentInputProps> = ({ index, insert, remove, move, numComponents }) => {
   const classes = useStyles()
   const [collapsed, setCollapsed] = useState(false)
+  const [component, setComponent] = useState<ComponentOption | null>(null)
+  const [description, setDescription] = useState<string>('')
+
+  if (collapsed) {
+    return (
+      <FormSection>
+        <Box display="flex" alignItems="center" className={classes.collapsedContainer}>
+          <Typography className={classes.collapsedDescription}>
+            {component?.label ?? '—'}, {description || '—'}
+          </Typography>
+          <Tooltip title="Unlock">
+            <span>
+              <IconButton size="small" onClick={() => setCollapsed(false)}>
+                <LockOutline />
+              </IconButton>
+            </span>
+          </Tooltip>
+        </Box>
+      </FormSection>
+    )
+  }
 
   return (
     <FormSection>
@@ -94,65 +136,73 @@ export const ComponentInput: React.FC<ComponentInputProps> = ({ index, insert, r
         options={componentOptions}
         groupBy={(option) => option.value.categoryLabel}
         renderGroup={(params: AutocompleteRenderGroupParams) => (
-          <React.Fragment>
-            <ListSubheader className={classes.optionGroupHeader} key={params.key}>
-              {params.group}
-            </ListSubheader>
+          <React.Fragment key={params.key}>
+            <ListSubheader className={classes.optionGroupHeader}>{params.group}</ListSubheader>
             {params.children}
           </React.Fragment>
         )}
+        value={component}
+        onChange={(_, option) => setComponent(option)}
         getOptionLabel={(option) => option.label}
         getOptionSelected={(option, selected) => option.value.type === selected.value.type}
         renderInput={(params) => <TextField {...params} label="Component" variant="outlined" />}
       />
-      <TextField label="Description" variant="outlined" fullWidth />
+      <TextField
+        label="Description"
+        variant="outlined"
+        fullWidth
+        value={description}
+        onChange={({ target }) => setDescription(target.value)}
+      />
       <Box display="flex" justifyContent="space-between">
         <Box display="flex">
-          <Tooltip title={collapsed ? 'Expand' : 'Collapse'}>
-            <IconButton className={classes.buttonLeft} size="small" onClick={() => setCollapsed(!collapsed)}>
-              {/* <ArrowCollapseVertical /> */}
-              {collapsed && <UnfoldMoreHorizontal />}
-              {!collapsed && <UnfoldLessHorizontal />}
-            </IconButton>
-          </Tooltip>
-          <Divider orientation="vertical" flexItem className={classes.buttonLeft} />
           <Tooltip title="Move Up">
-            <IconButton
-              disabled={index === 0}
-              className={classes.buttonLeft}
-              size="small"
-              onClick={() => move(index, 'up')}
-            >
-              <ArrowDownThinCircleOutline className={classes.rotate180} />
-            </IconButton>
+            <span>
+              <IconButton
+                disabled={index === 0}
+                className={classes.buttonLeft}
+                size="small"
+                onClick={() => move(index, 'up')}
+              >
+                <ArrowDownThinCircleOutline className={classes.rotate180} />
+              </IconButton>
+            </span>
           </Tooltip>
           <Tooltip title="Move Down">
-            <IconButton
-              disabled={index + 1 >= numComponents}
-              className={classes.buttonLeft}
-              size="small"
-              onClick={() => move(index, 'down')}
-            >
-              <ArrowDownThinCircleOutline />
-            </IconButton>
+            <span>
+              <IconButton
+                disabled={index + 1 >= numComponents}
+                className={classes.buttonLeft}
+                size="small"
+                onClick={() => move(index, 'down')}
+              >
+                <ArrowDownThinCircleOutline />
+              </IconButton>
+            </span>
           </Tooltip>
           <Divider orientation="vertical" flexItem className={classes.buttonLeft} />
           <Tooltip title="Insert After">
-            <IconButton className={classes.buttonLeft} size="small" onClick={() => insert(index)}>
-              <ShapeRectanglePlus />
-            </IconButton>
+            <span>
+              <IconButton className={classes.buttonLeft} size="small" onClick={() => insert(index)}>
+                <ShapeRectanglePlus />
+              </IconButton>
+            </span>
           </Tooltip>
           <Tooltip title="Delete">
-            <IconButton className={classes.buttonLeft} size="small" onClick={() => remove(index)}>
-              <DeleteOutlineIcon />
-            </IconButton>
+            <span>
+              <IconButton className={classes.buttonLeft} size="small" onClick={() => remove(index)}>
+                <DeleteOutlineIcon />
+              </IconButton>
+            </span>
           </Tooltip>
         </Box>
         <Box>
-          <Tooltip title="Delete">
-            <IconButton className={classes.buttonRight} size="small" onClick={() => {}}>
-              <DotsVertical />
-            </IconButton>
+          <Tooltip title="Lock">
+            <span>
+              <IconButton className={classes.buttonRight} size="small" onClick={() => setCollapsed(true)}>
+                <LockOpenVariantOutline />
+              </IconButton>
+            </span>
           </Tooltip>
         </Box>
       </Box>

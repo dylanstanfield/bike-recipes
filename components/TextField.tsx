@@ -3,7 +3,7 @@ import { makeStyles, Theme } from '@material-ui/core'
 
 const useStyles = makeStyles((theme: Theme) => ({
   input: {
-    marginBottom: theme.spacing(1.5),
+    marginBottom: theme.spacing(2),
   },
   label: {
     fontWeight: 900,
