@@ -16,7 +16,7 @@ export const COMPONENTS: Component[] = [
     category: 'frame_parts',
   },
   {
-    type: 'axels',
+    type: 'thru_axels',
     category: 'frame_parts',
   },
   {

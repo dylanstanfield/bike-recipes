@@ -1,17 +1,19 @@
-import Box, { BoxProps } from '@material-ui/core/Box'
-import { makeStyles, Theme } from '@material-ui/core'
+import { Paper, makeStyles, Theme } from '@material-ui/core'
 
 const useStyles = makeStyles((theme: Theme) => ({
   container: {
     padding: theme.spacing(2),
-    border: '1px solid #c3c3c3',
     borderRadius: 5,
     marginBottom: theme.spacing(2),
-    background: 'white',
+    background: theme.palette.background.paper,
   },
 }))
 
-export const FormSection: React.FC<BoxProps> = ({ children }) => {
+export const FormSection: React.FC = ({ children }) => {
   const classes = useStyles()
-  return <Box className={classes.container}>{children}</Box>
+  return (
+    <Paper variant="outlined" className={classes.container}>
+      {children}
+    </Paper>
+  )
 }

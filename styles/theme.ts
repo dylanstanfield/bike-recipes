@@ -1,18 +1,28 @@
-import { createMuiTheme } from '@material-ui/core/styles'
-import purple from '@material-ui/core/colors/purple'
-import green from '@material-ui/core/colors/green'
-import red from '@material-ui/core/colors/red'
+import { createMuiTheme, lighten, darken } from '@material-ui/core/styles'
+
+const olive = '#6B6A4E'
+const lightOlive = '#B8B574'
+const blue = '#59656B'
+const lightRed = '#B87D83'
 
 export const theme = createMuiTheme({
   palette: {
     primary: {
-      main: '#000',
+      main: olive,
     },
     secondary: {
-      main: green[500],
+      main: darken('#4C5669', 0.5),
     },
     error: {
-      main: red[500],
+      main: lightRed,
+    },
+    background: {
+      default: lighten(lightOlive, 0.75),
+      paper: lighten(lightOlive, 0.9),
+    },
+    text: {
+      primary: darken(blue, 0.2),
+      secondary: lighten(blue, 0.2),
     },
   },
   typography: {

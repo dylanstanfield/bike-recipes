@@ -88,7 +88,7 @@ const useStyles = makeStyles((theme: Theme) => ({
     fontWeight: 900,
     letterSpacing: '0.1em',
     fontSize: 12,
-    background: 'white',
+    background: theme.palette.background.paper,
     top: -theme.spacing(1), // fixes bug
   },
   collapsedContainer: {},
@@ -96,6 +96,9 @@ const useStyles = makeStyles((theme: Theme) => ({
     fontWeight: 900,
     flex: 1,
     marginRight: theme.spacing(1),
+  },
+  componentsPopover: {
+    border: `2px solid ${theme.palette.primary.main}`,
   },
 }))
 
@@ -105,13 +108,27 @@ export const ComponentInput: React.FC<ComponentInputProps> = ({ index, insert, r
   const [component, setComponent] = useState<ComponentOption | null>(null)
   const [description, setDescription] = useState<string>('')
 
+  const getCollapsedLabel = (): string => {
+    if (component && description) {
+      return `${component.label}, ${description}`
+    }
+
+    if (component && !description) {
+      return `${component.label}, —`
+    }
+
+    if (description) {
+      return `—, ${description}`
+    }
+
+    return '—'
+  }
+
   if (collapsed) {
     return (
       <FormSection>
         <Box display="flex" alignItems="center" className={classes.collapsedContainer}>
-          <Typography className={classes.collapsedDescription}>
-            {component?.label ?? '—'}, {description || '—'}
-          </Typography>
+          <Typography className={classes.collapsedDescription}>{getCollapsedLabel()}</Typography>
           <Tooltip title="Unlock">
             <span>
               <IconButton size="small" onClick={() => setCollapsed(false)}>
@@ -141,6 +158,7 @@ export const ComponentInput: React.FC<ComponentInputProps> = ({ index, insert, r
             {params.children}
           </React.Fragment>
         )}
+        classes={{ paper: classes.componentsPopover }}
         value={component}
         onChange={(_, option) => setComponent(option)}
         getOptionLabel={(option) => option.label}

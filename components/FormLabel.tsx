@@ -4,7 +4,7 @@ import MuiFormLabel from '@material-ui/core/FormLabel'
 const useStyles = makeStyles((theme: Theme) => ({
   label: {
     fontWeight: 900,
-    fontSize: 12,
+    fontSize: 16,
     textTransform: 'uppercase',
     letterSpacing: '0.1em',
     paddingBottom: theme.spacing(2),

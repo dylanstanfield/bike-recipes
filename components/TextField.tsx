@@ -10,7 +10,7 @@ const useStyles = makeStyles((theme: Theme) => ({
     textTransform: 'uppercase',
     fontSize: 14,
     letterSpacing: '0.1em',
-    background: 'white',
+    background: theme.palette.background.paper,
     paddingRight: theme.spacing(0.5),
   },
 }))
