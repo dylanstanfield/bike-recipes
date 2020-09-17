@@ -4,14 +4,15 @@ import Grid from '@material-ui/core/Grid'
 import Box from '@material-ui/core/Box'
 import { v4 as uuid } from 'uuid'
 import AddCircleOutlineOutlinedIcon from '@material-ui/icons/AddCircleOutlineOutlined'
+import { ArrowDownThinCircleOutline, LockOutline, LockOpenVariantOutline } from 'mdi-material-ui'
 
-import { ArrowDownThinCircleOutline } from 'mdi-material-ui'
+import { useComponents } from '../hooks/useComponents'
 import { FormLabel } from '../components/FormLabel'
 import { FormControl } from '../components/FormControl'
 import { TextField } from '../components/TextField'
 import { ComponentInput } from '../components/ComponentInput'
 import { FormSection } from '../components/FormSection'
-import { Config } from '../types'
+import { Config, ComponentVM } from '../types'
 
 const useStyles = makeStyles((theme: Theme) => ({
   title: {
@@ -26,7 +27,7 @@ const useStyles = makeStyles((theme: Theme) => ({
     bottom: 0,
     right: 0,
     left: 0,
-
+    zIndex: 1000,
     padding: theme.spacing(2),
     borderRadius: 0,
   },
@@ -36,45 +37,20 @@ export default function Home(): React.ReactElement {
   const classes = useStyles()
 
   const [name, setName] = useState('')
-  const [components, setComponents] = useState<{ description: string; id: string }[]>([{ description: '', id: uuid() }])
+  const { components, move, insert, remove, lock, unlock, lockAll, unlockAll } = useComponents()
+  // const [components, setComponents] = useState<ComponentVM[]>([{ description: '', id: uuid(), locked: false }])
   const [src, setSrc] = useState('')
 
-  const change = (input: string, index: number): void => {
-    setComponents(
-      components.map((component, i) => {
-        if (index !== i) {
-          return component
-        }
-        return { ...component, description: input }
-      }),
-    )
-  }
-
-  const move = (index: number, direction: 'up' | 'down') => {
-    const copy = [...components]
-
-    if (direction === 'up') {
-      copy.splice(index - 1, 0, copy.splice(index, 1)[0])
-    }
-
-    if (direction === 'down') {
-      copy.splice(index + 1, 0, copy.splice(index, 1)[0])
-    }
-
-    setComponents(copy)
-  }
-
-  const insert = (index: number) => {
-    const copy = [...components]
-    copy.splice(index + 1, 0, { description: '', id: uuid() })
-    setComponents(copy)
-  }
-
-  const remove = (index: number) => {
-    const copy = [...components]
-    copy.splice(index, 1)
-    setComponents(copy)
-  }
+  // const change = (input: string, index: number): void => {
+  //   setComponents(
+  //     components.map((component, i) => {
+  //       if (index !== i) {
+  //         return component
+  //       }
+  //       return { ...component, description: input }
+  //     }),
+  //   )
+  // }
 
   const submit = () => {
     const config: Config = {
@@ -108,13 +84,18 @@ export default function Home(): React.ReactElement {
               {components.map((component, index) => (
                 <ComponentInput
                   key={component.id}
-                  move={move}
-                  remove={remove}
-                  insert={insert}
+                  component={component}
                   index={index}
+                  moveUp={() => move(index, 'up')}
+                  moveDown={() => move(index, 'down')}
+                  remove={() => remove(index)}
+                  insert={() => insert(index)}
+                  lock={() => lock(index)}
+                  unlock={() => unlock(index)}
                   numComponents={components.length}
                 />
               ))}
+
               <Button
                 onClick={() => insert(components.length - 1)}
                 style={{ fontWeight: 900, letterSpacing: '0.1em', fontSize: 14 }}
@@ -125,14 +106,28 @@ export default function Home(): React.ReactElement {
                 Add Component
               </Button>
             </FormControl>
+
+            <Box height={64} />
+
             <Paper className={classes.toolbar} elevation={3} variant="outlined">
-              <Tooltip title="Move Down">
-                <span>
-                  <IconButton size="small" onClick={() => {}}>
-                    <ArrowDownThinCircleOutline />
-                  </IconButton>
-                </span>
-              </Tooltip>
+              {components.some(({ locked }) => !locked) && (
+                <Tooltip title="Lock All">
+                  <span>
+                    <IconButton size="small" onClick={() => lockAll()}>
+                      <LockOpenVariantOutline />
+                    </IconButton>
+                  </span>
+                </Tooltip>
+              )}
+              {components.every(({ locked }) => locked) && (
+                <Tooltip title="Unlock All">
+                  <span>
+                    <IconButton size="small" onClick={() => unlockAll()}>
+                      <LockOutline />
+                    </IconButton>
+                  </span>
+                </Tooltip>
+              )}
             </Paper>
           </form>
         </Box>

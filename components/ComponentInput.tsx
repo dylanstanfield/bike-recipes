@@ -2,28 +2,12 @@ import React, { useState } from 'react'
 import IconButton from '@material-ui/core/IconButton'
 import Tooltip from '@material-ui/core/Tooltip'
 
-import {
-  WindowMinimize,
-  ChevronDoubleDown,
-  ChevronDoubleUp,
-  ShapeRectanglePlus,
-  ArrowCollapseVertical,
-  DotsVertical,
-  UnfoldLessHorizontal,
-  UnfoldMoreHorizontal,
-  ArrowDownThinCircleOutline,
-  LockOpenOutline,
-  LockOutline,
-  LockOpenVariantOutline,
-} from 'mdi-material-ui'
+import { ShapeRectanglePlus, ArrowDownThinCircleOutline, LockOutline, LockOpenVariantOutline } from 'mdi-material-ui'
 import DeleteOutlineIcon from '@material-ui/icons/DeleteOutline'
-import FlipToFrontTwoToneIcon from '@material-ui/icons/FlipToFrontTwoTone'
-import FlipToBackTwoToneIcon from '@material-ui/icons/FlipToBackTwoTone'
-import ControlPointDuplicateIcon from '@material-ui/icons/ControlPointDuplicate'
 import Autocomplete, { AutocompleteRenderGroupParams } from '@material-ui/lab/Autocomplete'
 import { makeStyles, Theme, FormControl, Box, Typography, ListSubheader, Divider } from '@material-ui/core'
 
-import { Component, COMPONENTS } from '../types'
+import { Component, COMPONENTS, ComponentVM } from '../types'
 import { TextField } from './TextField'
 import { FormSection } from './FormSection'
 
@@ -55,10 +39,14 @@ const componentOptions = COMPONENTS.map(
 )
 
 interface ComponentInputProps {
-  move: (index: number, direction: 'up' | 'down') => void
-  insert: (index: number) => void
-  remove: (index: number) => void
+  component: ComponentVM
   index: number
+  moveUp: () => void
+  moveDown: () => void
+  insert: () => void
+  remove: () => void
+  lock: () => void
+  unlock: () => void
   numComponents: number
 }
 
@@ -102,19 +90,28 @@ const useStyles = makeStyles((theme: Theme) => ({
   },
 }))
 
-export const ComponentInput: React.FC<ComponentInputProps> = ({ index, insert, remove, move, numComponents }) => {
+export const ComponentInput: React.FC<ComponentInputProps> = ({
+  component,
+  index,
+  insert,
+  remove,
+  moveUp,
+  moveDown,
+  lock,
+  unlock,
+  numComponents,
+}) => {
   const classes = useStyles()
-  const [collapsed, setCollapsed] = useState(false)
-  const [component, setComponent] = useState<ComponentOption | null>(null)
+  const [componentOption, setComponentOption] = useState<ComponentOption | null>(null)
   const [description, setDescription] = useState<string>('')
 
   const getCollapsedLabel = (): string => {
-    if (component && description) {
-      return `${component.label}, ${description}`
+    if (componentOption && description) {
+      return `${componentOption.label}, ${description}`
     }
 
-    if (component && !description) {
-      return `${component.label}, —`
+    if (componentOption && !description) {
+      return `${componentOption.label}, —`
     }
 
     if (description) {
@@ -124,14 +121,14 @@ export const ComponentInput: React.FC<ComponentInputProps> = ({ index, insert, r
     return '—'
   }
 
-  if (collapsed) {
+  if (component.locked) {
     return (
       <FormSection>
         <Box display="flex" alignItems="center" className={classes.collapsedContainer}>
           <Typography className={classes.collapsedDescription}>{getCollapsedLabel()}</Typography>
           <Tooltip title="Unlock">
             <span>
-              <IconButton size="small" onClick={() => setCollapsed(false)}>
+              <IconButton size="small" onClick={() => unlock()}>
                 <LockOutline />
               </IconButton>
             </span>
@@ -159,8 +156,8 @@ export const ComponentInput: React.FC<ComponentInputProps> = ({ index, insert, r
           </React.Fragment>
         )}
         classes={{ paper: classes.componentsPopover }}
-        value={component}
-        onChange={(_, option) => setComponent(option)}
+        value={componentOption}
+        onChange={(_, option) => setComponentOption(option)}
         getOptionLabel={(option) => option.label}
         getOptionSelected={(option, selected) => option.value.type === selected.value.type}
         renderInput={(params) => <TextField {...params} label="Component" variant="outlined" />}
@@ -176,12 +173,7 @@ export const ComponentInput: React.FC<ComponentInputProps> = ({ index, insert, r
         <Box display="flex">
           <Tooltip title="Move Up">
             <span>
-              <IconButton
-                disabled={index === 0}
-                className={classes.buttonLeft}
-                size="small"
-                onClick={() => move(index, 'up')}
-              >
+              <IconButton disabled={index === 0} className={classes.buttonLeft} size="small" onClick={() => moveUp()}>
                 <ArrowDownThinCircleOutline className={classes.rotate180} />
               </IconButton>
             </span>
@@ -192,7 +184,7 @@ export const ComponentInput: React.FC<ComponentInputProps> = ({ index, insert, r
                 disabled={index + 1 >= numComponents}
                 className={classes.buttonLeft}
                 size="small"
-                onClick={() => move(index, 'down')}
+                onClick={() => moveDown()}
               >
                 <ArrowDownThinCircleOutline />
               </IconButton>
@@ -201,14 +193,14 @@ export const ComponentInput: React.FC<ComponentInputProps> = ({ index, insert, r
           <Divider orientation="vertical" flexItem className={classes.buttonLeft} />
           <Tooltip title="Insert After">
             <span>
-              <IconButton className={classes.buttonLeft} size="small" onClick={() => insert(index)}>
+              <IconButton className={classes.buttonLeft} size="small" onClick={() => insert()}>
                 <ShapeRectanglePlus />
               </IconButton>
             </span>
           </Tooltip>
           <Tooltip title="Delete">
             <span>
-              <IconButton className={classes.buttonLeft} size="small" onClick={() => remove(index)}>
+              <IconButton className={classes.buttonLeft} size="small" onClick={() => remove()}>
                 <DeleteOutlineIcon />
               </IconButton>
             </span>
@@ -217,7 +209,7 @@ export const ComponentInput: React.FC<ComponentInputProps> = ({ index, insert, r
         <Box>
           <Tooltip title="Lock">
             <span>
-              <IconButton className={classes.buttonRight} size="small" onClick={() => setCollapsed(true)}>
+              <IconButton className={classes.buttonRight} size="small" onClick={() => lock()}>
                 <LockOpenVariantOutline />
               </IconButton>
             </span>

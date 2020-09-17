@@ -5,6 +5,12 @@ export type Component = {
   category: typeof COMPONENT_CATEGORIES[number]
 }
 
+export interface ComponentVM {
+  description: string
+  id: string
+  locked: boolean
+}
+
 export const COMPONENTS: Component[] = [
   // Frame parts
   {
