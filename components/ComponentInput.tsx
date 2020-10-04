@@ -53,7 +53,6 @@ interface ComponentInputProps {
 const useStyles = makeStyles((theme: Theme) => ({
   menuItem: {
     textTransform: 'uppercase',
-    fontWeight: 900,
     letterSpacing: '0.1em',
     fontSize: 12,
     paddingRight: theme.spacing(4),
@@ -65,7 +64,7 @@ const useStyles = makeStyles((theme: Theme) => ({
     marginLeft: theme.spacing(1),
   },
   option: {
-    fontWeight: 900,
+    fontWeight: 'bold',
     fontSize: 16,
   },
   rotate180: {
@@ -73,7 +72,7 @@ const useStyles = makeStyles((theme: Theme) => ({
   },
   optionGroupHeader: {
     textTransform: 'uppercase',
-    fontWeight: 900,
+    fontWeight: 'bold',
     letterSpacing: '0.1em',
     fontSize: 12,
     background: theme.palette.background.paper,
@@ -81,7 +80,6 @@ const useStyles = makeStyles((theme: Theme) => ({
   },
   collapsedContainer: {},
   collapsedDescription: {
-    fontWeight: 900,
     flex: 1,
     marginRight: theme.spacing(1),
   },

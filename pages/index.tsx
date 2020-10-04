@@ -2,9 +2,8 @@ import { useState } from 'react'
 import { Container, Typography, Button, makeStyles, Theme, Tooltip, IconButton, Paper } from '@material-ui/core'
 import Grid from '@material-ui/core/Grid'
 import Box from '@material-ui/core/Box'
-import { v4 as uuid } from 'uuid'
 import AddCircleOutlineOutlinedIcon from '@material-ui/icons/AddCircleOutlineOutlined'
-import { ArrowDownThinCircleOutline, LockOutline, LockOpenVariantOutline } from 'mdi-material-ui'
+import { LockOutline, LockOpenVariantOutline } from 'mdi-material-ui'
 
 import { useComponents } from '../hooks/useComponents'
 import { FormLabel } from '../components/FormLabel'
@@ -12,16 +11,51 @@ import { FormControl } from '../components/FormControl'
 import { TextField } from '../components/TextField'
 import { ComponentInput } from '../components/ComponentInput'
 import { FormSection } from '../components/FormSection'
-import { Config, ComponentVM } from '../types'
+import { Config } from '../types'
 
 const useStyles = makeStyles((theme: Theme) => ({
-  title: {
-    color: theme.palette.background.default,
-  },
   titleContainer: {
     background: theme.palette.primary.main,
-    padding: theme.spacing(2),
+    padding: theme.spacing(3),
+    // display: 'flex',
+    // flexDirection: 'row',
+    // alignItems: 'center',
+    textAlign: 'center',
   },
+  logo: {
+    height: 80,
+    // marginRight: theme.spacing(2),
+    margin: '0 auto',
+    display: 'block',
+  },
+  title: {
+    fontSize: 20,
+    color: theme.palette.background.default,
+    // fontWeight: 900,
+    fontStyle: 'italic',
+    marginTop: theme.spacing(1),
+    // marginBottom: theme.spacing(1),
+  },
+  // titleContainer: {
+  //   background: theme.palette.primary.main,
+  //   padding: theme.spacing(3),
+  //   display: 'flex',
+  //   flexDirection: 'row',
+  //   alignItems: 'center',
+  //   // textAlign: 'center',
+  // },
+  // logo: {
+  //   height: 80,
+  //   marginRight: theme.spacing(2),
+  //   // margin: '0 auto',
+  //   // display: 'block',
+  // },
+  // title: {
+  //   fontSize: 20,
+  //   color: theme.palette.background.default,
+  //   fontStyle: 'italic',
+  //   // marginTop: theme.spacing(1),
+  // },
   toolbar: {
     position: 'fixed',
     bottom: 0,
@@ -38,7 +72,6 @@ export default function Home(): React.ReactElement {
 
   const [name, setName] = useState('')
   const { components, move, insert, remove, lock, unlock, lockAll, unlockAll } = useComponents()
-  // const [components, setComponents] = useState<ComponentVM[]>([{ description: '', id: uuid(), locked: false }])
   const [src, setSrc] = useState('')
 
   // const change = (input: string, index: number): void => {
@@ -64,8 +97,9 @@ export default function Home(): React.ReactElement {
   return (
     <Container maxWidth="lg" disableGutters>
       <Grid className={classes.titleContainer}>
-        <Typography className={classes.title} variant="h1">
-          Bike Recipes
+        <img src="/logo.circle.light.svg" className={classes.logo} />
+        <Typography component="h1" className={classes.title}>
+          bike recipes
         </Typography>
       </Grid>
       <Grid item md={4} xs={12}>
@@ -75,7 +109,15 @@ export default function Home(): React.ReactElement {
               <FormLabel>Information</FormLabel>
               <FormSection>
                 <TextField label="Build Name" variant="outlined" fullWidth />
-                <TextField label="Your Name" variant="outlined" fullWidth />
+                <TextField
+                  label="Description"
+                  variant="outlined"
+                  disableMarginBottom
+                  fullWidth
+                  multiline
+                  rows={3}
+                  rowsMax={6}
+                />
               </FormSection>
             </FormControl>
 

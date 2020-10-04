@@ -1,9 +1,59 @@
 import { createMuiTheme, lighten, darken } from '@material-ui/core/styles'
 
+import VulfMonoRegularWoff from '../fonts/vulf-mono/Vulf-Mono-Regular.woff'
+import VulfMonoItalicWoff from '../fonts/vulf-mono/Vulf-Mono-Italic.woff'
+import VulfMonoBlackWoff from '../fonts/vulf-mono/Vulf-Mono-Black.woff'
+import VulfMonoBlackItalicWoff from '../fonts/vulf-mono/Vulf-Mono-Black-Italic.woff'
+
 const olive = '#6B6A4E'
 const lightOlive = '#B8B574'
 const blue = '#59656B'
 const lightRed = '#B87D83'
+
+const VulfMonoRegular = {
+  fontFamily: 'Vulf Mono',
+  fontStyle: 'normal',
+  fontWeight: 400,
+  src: `
+    url(${VulfMonoRegularWoff}) format('woff')
+  `,
+}
+
+const VulfMonoItalic = {
+  fontFamily: 'Vulf Mono',
+  fontStyle: 'italic',
+  fontWeight: 400,
+  src: `
+    url(${VulfMonoItalicWoff}) format('woff')
+  `,
+}
+
+const VulfMonoBold = {
+  fontFamily: 'Vulf Mono',
+  fontStyle: 'bold',
+  fontWeight: 700,
+  src: `
+    url(${VulfMonoBlackWoff}) format('woff2')
+  `,
+}
+
+const VulfMonoBlack = {
+  fontFamily: 'Vulf Mono',
+  fontStyle: 'bolder',
+  fontWeight: 900,
+  src: `
+    url(${VulfMonoBlackWoff}) format('woff2')
+  `,
+}
+
+const VulfMonoBlackItalic = {
+  fontFamily: 'Vulf Mono',
+  fontStyle: 'italic',
+  fontWeight: 900,
+  src: `
+    url(${VulfMonoBlackItalicWoff}) format('woff2')
+  `,
+}
 
 export const theme = createMuiTheme({
   palette: {
@@ -17,7 +67,7 @@ export const theme = createMuiTheme({
       main: lightRed,
     },
     background: {
-      default: lighten(lightOlive, 0.75),
+      default: '#edecdd',
       paper: lighten(lightOlive, 0.9),
     },
     text: {
@@ -26,29 +76,13 @@ export const theme = createMuiTheme({
     },
   },
   typography: {
-    fontFamily: [
-      '-apple-system',
-      'BlinkMacSystemFont',
-      '"Segoe UI"',
-      'Roboto',
-      '"Helvetica Neue"',
-      'Arial',
-      'sans-serif',
-      '"Apple Color Emoji"',
-      '"Segoe UI Emoji"',
-      '"Segoe UI Symbol"',
-    ].join(','),
-    h1: {
-      fontWeight: 900,
-      textTransform: 'uppercase',
-      fontSize: 36,
-    },
+    fontFamily: 'Vulf Mono, Courier New, Courier, monospace',
   },
   overrides: {
-    // MuiFormControlLabel: {
-    //   label: {
-    //     fontWeight: 900,
-    //   },
-    // },
+    MuiCssBaseline: {
+      '@global': {
+        '@font-face': [VulfMonoRegular, VulfMonoItalic, VulfMonoBold, VulfMonoBlack, VulfMonoBlackItalic],
+      },
+    },
   },
 })

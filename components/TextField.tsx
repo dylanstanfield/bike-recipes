@@ -1,12 +1,15 @@
 import MuiTextField, { TextFieldProps } from '@material-ui/core/TextField'
 import { makeStyles, Theme } from '@material-ui/core'
 
-const useStyles = makeStyles((theme: Theme) => ({
+interface StyleProps {
+  disableMarginBottom?: boolean
+}
+
+const useStyles = makeStyles<Theme, StyleProps>((theme: Theme) => ({
   input: {
-    marginBottom: theme.spacing(2),
+    marginBottom: ({ disableMarginBottom }) => theme.spacing(disableMarginBottom ? 0 : 2),
   },
   label: {
-    fontWeight: 900,
     textTransform: 'uppercase',
     fontSize: 14,
     letterSpacing: '0.1em',
@@ -15,8 +18,8 @@ const useStyles = makeStyles((theme: Theme) => ({
   },
 }))
 
-export const TextField: React.FC<TextFieldProps> = (props) => {
-  const classes = useStyles()
+export const TextField: React.FC<TextFieldProps & StyleProps> = (props) => {
+  const classes = useStyles({ disableMarginBottom: props.disableMarginBottom })
   const { InputProps, ...rest } = props
 
   return (
@@ -25,7 +28,7 @@ export const TextField: React.FC<TextFieldProps> = (props) => {
       size="small"
       className={classes.input}
       InputLabelProps={{ className: classes.label }}
-      InputProps={{ style: { fontWeight: 900, fontSize: '16px' }, ...InputProps }}
+      InputProps={{ style: { fontSize: '16px', lineHeight: 1.4 }, ...InputProps }}
     />
   )
 }
