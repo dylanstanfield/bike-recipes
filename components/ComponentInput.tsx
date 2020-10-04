@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import IconButton from '@material-ui/core/IconButton'
 import Tooltip from '@material-ui/core/Tooltip'
 
@@ -7,7 +7,7 @@ import DeleteOutlineIcon from '@material-ui/icons/DeleteOutline'
 import Autocomplete, { AutocompleteRenderGroupParams } from '@material-ui/lab/Autocomplete'
 import { makeStyles, Theme, FormControl, Box, Typography, ListSubheader, Divider } from '@material-ui/core'
 
-import { Component, COMPONENTS, ComponentVM } from '../types'
+import { Component, COMPONENTS, ComponentVM, ComponentType } from '../types'
 import { TextField } from './TextField'
 import { FormSection } from './FormSection'
 
@@ -16,24 +16,19 @@ interface ComponentOption {
   value: Component & { categoryLabel: string }
 }
 
-const initialComponentOption: ComponentOption = {
-  label: '',
-  value: { category: 'drivetrain', type: '', categoryLabel: '' },
-}
+const labelify = (snake: string) =>
+  snake
+    .split('_')
+    .map((str) => str.charAt(0).toUpperCase() + str.slice(1))
+    .join(' ')
 
 const componentOptions = COMPONENTS.map(
   (comp): ComponentOption => ({
-    label: comp.type
-      .split('_')
-      .map((str) => str.charAt(0).toUpperCase() + str.slice(1))
-      .join(' '),
+    label: labelify(comp.type),
     value: {
       type: comp.type,
       category: comp.category,
-      categoryLabel: comp.category
-        .split('_')
-        .map((str) => str.charAt(0).toUpperCase() + str.slice(1))
-        .join(' '),
+      categoryLabel: labelify(comp.category),
     },
   }),
 )
@@ -44,6 +39,7 @@ interface ComponentInputProps {
   moveUp: () => void
   moveDown: () => void
   insert: () => void
+  update: (description: string, type?: ComponentType) => void
   remove: () => void
   lock: () => void
   unlock: () => void
@@ -64,7 +60,6 @@ const useStyles = makeStyles((theme: Theme) => ({
     marginLeft: theme.spacing(1),
   },
   option: {
-    fontWeight: 'bold',
     fontSize: 16,
   },
   rotate180: {
@@ -92,6 +87,7 @@ export const ComponentInput: React.FC<ComponentInputProps> = ({
   component,
   index,
   insert,
+  update,
   remove,
   moveUp,
   moveDown,
@@ -100,20 +96,18 @@ export const ComponentInput: React.FC<ComponentInputProps> = ({
   numComponents,
 }) => {
   const classes = useStyles()
-  const [componentOption, setComponentOption] = useState<ComponentOption | null>(null)
-  const [description, setDescription] = useState<string>('')
 
   const getCollapsedLabel = (): string => {
-    if (componentOption && description) {
-      return `${componentOption.label}, ${description}`
+    if (component.type && component.description) {
+      return `${labelify(component.type)}, ${component.description}`
     }
 
-    if (componentOption && !description) {
-      return `${componentOption.label}, —`
+    if (component.type && !component.description) {
+      return `${labelify(component.type)}, —`
     }
 
-    if (description) {
-      return `—, ${description}`
+    if (component.description) {
+      return `—, ${component.description}`
     }
 
     return '—'
@@ -154,8 +148,8 @@ export const ComponentInput: React.FC<ComponentInputProps> = ({
           </React.Fragment>
         )}
         classes={{ paper: classes.componentsPopover }}
-        value={componentOption}
-        onChange={(_, option) => setComponentOption(option)}
+        value={componentOptions.find((opt) => opt.value.type === component.type)}
+        onChange={(_, option) => update(component.description, option?.value.type)}
         getOptionLabel={(option) => option.label}
         getOptionSelected={(option, selected) => option.value.type === selected.value.type}
         renderInput={(params) => <TextField {...params} label="Component" variant="outlined" />}
@@ -164,8 +158,8 @@ export const ComponentInput: React.FC<ComponentInputProps> = ({
         label="Description"
         variant="outlined"
         fullWidth
-        value={description}
-        onChange={({ target }) => setDescription(target.value)}
+        value={component.description}
+        onChange={({ target }) => update(target.value, component.type)}
       />
       <Box display="flex" justifyContent="space-between">
         <Box display="flex">

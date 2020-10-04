@@ -1,11 +1,52 @@
 export const COMPONENT_CATEGORIES = ['drivetrain', 'frame_parts', 'wheels', 'cockpit', 'touring'] as const
+export const COMPONENT_TYPES = [
+  'frame',
+  'fork',
+  'thru_axels',
+  'quick_release_skewers',
+  'front_derailleur',
+  'rear_derailleur',
+  'pedals',
+  'cassette',
+  'chainrings',
+  'cog',
+  'cranks',
+  'chain',
+  'bottom_bracket',
+  'wheels',
+  'hubs',
+  'spokes',
+  'valves',
+  'tires',
+  'rims',
+  'brakes',
+  'brake_rotors',
+  'stem',
+  'handlebars',
+  'handlebar_tape',
+  'grips',
+  'headset',
+  'seatpost',
+  'seatpost_clamp',
+  'saddle',
+  'shifters',
+  'brake_levers',
+  'front_rack',
+  'rear_rack',
+  'basket',
+  'bag',
+] as const
+
+export type ComponentType = typeof COMPONENT_TYPES[number]
+export type ComponentCategory = typeof COMPONENT_CATEGORIES[number]
 
 export type Component = {
-  type: string
-  category: typeof COMPONENT_CATEGORIES[number]
+  type: ComponentType
+  category: ComponentCategory
 }
 
 export interface ComponentVM {
+  type?: ComponentType
   description: string
   id: string
   locked: boolean
@@ -91,10 +132,6 @@ export const COMPONENTS: Component[] = [
   },
   {
     type: 'rims',
-    category: 'wheels',
-  },
-  {
-    type: 'brakes',
     category: 'wheels',
   },
   {

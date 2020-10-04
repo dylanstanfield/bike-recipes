@@ -11,51 +11,25 @@ import { FormControl } from '../components/FormControl'
 import { TextField } from '../components/TextField'
 import { ComponentInput } from '../components/ComponentInput'
 import { FormSection } from '../components/FormSection'
-import { Config } from '../types'
+import { ComponentType, Config } from '../types'
 
 const useStyles = makeStyles((theme: Theme) => ({
   titleContainer: {
     background: theme.palette.primary.main,
     padding: theme.spacing(3),
-    // display: 'flex',
-    // flexDirection: 'row',
-    // alignItems: 'center',
     textAlign: 'center',
   },
   logo: {
     height: 80,
-    // marginRight: theme.spacing(2),
     margin: '0 auto',
     display: 'block',
   },
   title: {
     fontSize: 20,
     color: theme.palette.background.default,
-    // fontWeight: 900,
     fontStyle: 'italic',
     marginTop: theme.spacing(1),
-    // marginBottom: theme.spacing(1),
   },
-  // titleContainer: {
-  //   background: theme.palette.primary.main,
-  //   padding: theme.spacing(3),
-  //   display: 'flex',
-  //   flexDirection: 'row',
-  //   alignItems: 'center',
-  //   // textAlign: 'center',
-  // },
-  // logo: {
-  //   height: 80,
-  //   marginRight: theme.spacing(2),
-  //   // margin: '0 auto',
-  //   // display: 'block',
-  // },
-  // title: {
-  //   fontSize: 20,
-  //   color: theme.palette.background.default,
-  //   fontStyle: 'italic',
-  //   // marginTop: theme.spacing(1),
-  // },
   toolbar: {
     position: 'fixed',
     bottom: 0,
@@ -71,19 +45,8 @@ export default function Home(): React.ReactElement {
   const classes = useStyles()
 
   const [name, setName] = useState('')
-  const { components, move, insert, remove, lock, unlock, lockAll, unlockAll } = useComponents()
+  const { components, move, insert, update, remove, lock, unlock, lockAll, unlockAll } = useComponents()
   const [src, setSrc] = useState('')
-
-  // const change = (input: string, index: number): void => {
-  //   setComponents(
-  //     components.map((component, i) => {
-  //       if (index !== i) {
-  //         return component
-  //       }
-  //       return { ...component, description: input }
-  //     }),
-  //   )
-  // }
 
   const submit = () => {
     const config: Config = {
@@ -132,6 +95,7 @@ export default function Home(): React.ReactElement {
                   moveDown={() => move(index, 'down')}
                   remove={() => remove(index)}
                   insert={() => insert(index)}
+                  update={(description: string, type?: ComponentType) => update(index, description, type)}
                   lock={() => lock(index)}
                   unlock={() => unlock(index)}
                   numComponents={components.length}

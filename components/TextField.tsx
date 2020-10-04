@@ -19,8 +19,9 @@ const useStyles = makeStyles<Theme, StyleProps>((theme: Theme) => ({
 }))
 
 export const TextField: React.FC<TextFieldProps & StyleProps> = (props) => {
-  const classes = useStyles({ disableMarginBottom: props.disableMarginBottom })
-  const { InputProps, ...rest } = props
+  const { InputProps, disableMarginBottom, ...rest } = props
+
+  const classes = useStyles({ disableMarginBottom })
 
   return (
     <MuiTextField

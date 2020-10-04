@@ -1,17 +1,37 @@
 import { useState } from 'react'
 import { v4 as uuid } from 'uuid'
 
-import { ComponentVM } from '../types'
-
-const defaultComponent = () => ({ description: '', id: uuid(), locked: false })
+import { ComponentVM, ComponentType } from '../types'
 
 export const useComponents = () => {
-  const [components, setComponents] = useState<ComponentVM[]>([defaultComponent()])
+  const [components, setComponents] = useState<ComponentVM[]>([
+    { type: 'frame', description: '', id: uuid(), locked: false },
+    { type: 'wheels', description: '', id: uuid(), locked: false },
+    { type: 'handlebars', description: '', id: uuid(), locked: false },
+    { type: 'shifters', description: '', id: uuid(), locked: false },
+  ])
 
   const insert = (index: number) => {
     const copy = [...components]
-    copy.splice(index + 1, 0, defaultComponent())
+    copy.splice(index + 1, 0, { description: '', id: uuid(), locked: false })
     setComponents(copy)
+  }
+
+  const update = (index: number, description: string, type?: ComponentType) => {
+    setComponents(
+      components.map((component, i) => {
+        if (i === index) {
+          console.log('updating...', description, type)
+          return {
+            ...component,
+            description,
+            type,
+          }
+        }
+
+        return component
+      }),
+    )
   }
 
   const remove = (index: number) => {
@@ -82,5 +102,5 @@ export const useComponents = () => {
     )
   }
 
-  return { components, insert, remove, move, lock, unlock, lockAll, unlockAll }
+  return { components, insert, update, remove, move, lock, unlock, lockAll, unlockAll }
 }
