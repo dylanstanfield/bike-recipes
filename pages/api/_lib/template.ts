@@ -76,7 +76,12 @@ export const html = (config: Config): string => {
     <style>${css('dark', fontSize)}</style>
     <body>
         <div>
-            ${components.map((component) => `<div class="heading">${emojify(sanitize(component))}</div>`)}
+            ${components.map(
+              (component) =>
+                `<div class="heading">${emojify(sanitize(component.type))} ${emojify(
+                  sanitize(component.description),
+                )}</div>`,
+            )}
         </div>
     </body>
 </html>`

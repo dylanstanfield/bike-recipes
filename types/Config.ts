@@ -1,10 +1,7 @@
-import { Component } from './Component'
-import { Theme } from './Theme'
-import { FileType } from './FileType'
+import { ComponentInput } from './Component'
 
 export interface Config {
-  // fileType: FileType
-  // theme: Theme
-  name: string
-  components: string[]
+  buildName: string
+  description: string
+  components: ComponentInput[]
 }

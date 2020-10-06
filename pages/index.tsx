@@ -47,15 +47,16 @@ export default function Home(): React.ReactElement {
 
   const [buildName, setBuildName] = useState('')
   const [description, setDescription] = useState('')
-  const { components, move, insert, update, remove, lock, unlock, lockAll, unlockAll } = useComponents()
+  const { components, move, insert, update, remove, lock, unlock, lockAll, unlockAll, getInput } = useComponents()
   const [src, setSrc] = useState('')
 
   const submit = () => {
-    // const config: Config = {
-    //   name,
-    //   components: components.map(({ description }) => description),
-    // }
-    // setSrc(`/api/build?c=${encodeURIComponent(JSON.stringify(config))}`)
+    const config: Config = {
+      buildName,
+      description,
+      components: getInput(),
+    }
+    setSrc(`/api/build?c=${encodeURIComponent(JSON.stringify(config))}`)
   }
 
   return (
@@ -68,6 +69,7 @@ export default function Home(): React.ReactElement {
       </Grid>
       <Grid item md={4} xs={12}>
         <Box padding={2}>
+          <Typography>{src}</Typography>
           <form>
             <FormControl>
               <FormLabel>Information</FormLabel>
@@ -143,6 +145,13 @@ export default function Home(): React.ReactElement {
                   </span>
                 </Tooltip>
               )}
+              <Tooltip title="Submit">
+                <span>
+                  <IconButton size="small" onClick={() => submit()}>
+                    <LockOpenVariantOutline />
+                  </IconButton>
+                </span>
+              </Tooltip>
             </Paper>
           </form>
         </Box>

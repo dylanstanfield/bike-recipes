@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import { v4 as uuid } from 'uuid'
 
-import { ComponentVM, ComponentType } from '../types'
+import { ComponentVM, ComponentType, ComponentInput } from '../types'
 
 export const useComponents = () => {
   const [components, setComponents] = useState<ComponentVM[]>([
@@ -101,5 +101,17 @@ export const useComponents = () => {
     )
   }
 
-  return { components, insert, update, remove, move, lock, unlock, lockAll, unlockAll }
+  const getInput = (): ComponentInput[] => {
+    const inputs: ComponentInput[] = []
+
+    components.forEach(({ type, description }) => {
+      if (type && description) {
+        inputs.push({ type, description })
+      }
+    })
+
+    return inputs
+  }
+
+  return { components, insert, update, remove, move, lock, unlock, lockAll, unlockAll, getInput }
 }

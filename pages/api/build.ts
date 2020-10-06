@@ -5,6 +5,7 @@ import { parse } from 'url'
 import { html } from './_lib/template'
 import { screenshot } from './_lib/screenshot'
 import { validateConfig } from './_lib/schema/Config'
+import { Config } from '../../types'
 
 const logger = pino()
 const isDev = !process.env.AWS_REGION
@@ -20,7 +21,7 @@ export default async (req: NextApiRequest, res: NextApiResponse): Promise<void> 
       throw new Error('config is invalid')
     }
 
-    const config = JSON.parse(query.c)
+    const config = JSON.parse(query.c) as Config
     const { valid, errors } = await validateConfig(config)
 
     if (!valid) {
@@ -38,7 +39,7 @@ export default async (req: NextApiRequest, res: NextApiResponse): Promise<void> 
       return
     }
 
-    const { fileType } = config
+    const fileType = 'png'
     const file = await screenshot(markup, fileType, isDev)
 
     res.statusCode = 200

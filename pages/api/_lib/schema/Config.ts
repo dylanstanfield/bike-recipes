@@ -1,19 +1,14 @@
 import { object, string, array } from 'yup'
-import { FILE_TYPES, THEMES, COMPONENTS, Config } from '../../../../types'
+import { Config, COMPONENT_TYPES } from '../../../../types'
 
 const schema = object().shape({
-  // fileType: string().required().oneOf(FILE_TYPES),
-  // theme: string().required().oneOf(THEMES),
-  // components: array()
-  //   .required()
-  //   .of(
-  //     object().shape({
-  //       type: string().required().oneOf(COMPONENTS),
-  //       text: string().required(),
-  //     }),
-  //   ),
   name: string(),
-  components: array().of(string()),
+  components: array().of(
+    object().shape({
+      type: string().required().oneOf(COMPONENT_TYPES),
+      description: string().required(),
+    }),
+  ),
 })
 
 export const validateConfig = async (config: Config): Promise<{ valid: boolean; errors?: string[] }> => {

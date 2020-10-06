@@ -40,6 +40,11 @@ export const COMPONENT_TYPES = [
 export type ComponentType = typeof COMPONENT_TYPES[number]
 export type ComponentCategory = typeof COMPONENT_CATEGORIES[number]
 
+export type ComponentInput = {
+  type: ComponentType
+  description: string
+}
+
 export type Component = {
   type: ComponentType
   category: ComponentCategory
