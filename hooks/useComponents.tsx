@@ -21,7 +21,6 @@ export const useComponents = () => {
     setComponents(
       components.map((component, i) => {
         if (i === index) {
-          console.log('updating...', description, type)
           return {
             ...component,
             description,

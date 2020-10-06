@@ -148,8 +148,13 @@ export const ComponentInput: React.FC<ComponentInputProps> = ({
           </React.Fragment>
         )}
         classes={{ paper: classes.componentsPopover }}
-        value={componentOptions.find((opt) => opt.value.type === component.type)}
-        onChange={(_, option) => update(component.description, option?.value.type)}
+        value={
+          componentOptions.find((opt) => opt.value.type === component.type) || {
+            label: '',
+            value: { type: '', category: '', categoryLabel: '' },
+          }
+        }
+        onChange={(_, option) => update(component.description, option?.value.type as ComponentType)}
         getOptionLabel={(option) => option.label}
         getOptionSelected={(option, selected) => option.value.type === selected.value.type}
         renderInput={(params) => <TextField {...params} label="Component" variant="outlined" />}

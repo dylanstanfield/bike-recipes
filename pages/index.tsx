@@ -29,6 +29,7 @@ const useStyles = makeStyles((theme: Theme) => ({
     color: theme.palette.background.default,
     fontStyle: 'italic',
     marginTop: theme.spacing(1),
+    textTransform: 'lowercase',
   },
   toolbar: {
     position: 'fixed',
@@ -44,17 +45,17 @@ const useStyles = makeStyles((theme: Theme) => ({
 export default function Home(): React.ReactElement {
   const classes = useStyles()
 
-  const [name, setName] = useState('')
+  const [buildName, setBuildName] = useState('')
+  const [description, setDescription] = useState('')
   const { components, move, insert, update, remove, lock, unlock, lockAll, unlockAll } = useComponents()
   const [src, setSrc] = useState('')
 
   const submit = () => {
-    const config: Config = {
-      name,
-      components: components.map(({ description }) => description),
-    }
-
-    setSrc(`/api/build?c=${encodeURIComponent(JSON.stringify(config))}`)
+    // const config: Config = {
+    //   name,
+    //   components: components.map(({ description }) => description),
+    // }
+    // setSrc(`/api/build?c=${encodeURIComponent(JSON.stringify(config))}`)
   }
 
   return (
@@ -62,7 +63,7 @@ export default function Home(): React.ReactElement {
       <Grid className={classes.titleContainer}>
         <img src="/logo.circle.light.svg" className={classes.logo} />
         <Typography component="h1" className={classes.title}>
-          bike recipes
+          Bike Recipes
         </Typography>
       </Grid>
       <Grid item md={4} xs={12}>
@@ -71,7 +72,13 @@ export default function Home(): React.ReactElement {
             <FormControl>
               <FormLabel>Information</FormLabel>
               <FormSection>
-                <TextField label="Build Name" variant="outlined" fullWidth />
+                <TextField
+                  label="Build Name"
+                  variant="outlined"
+                  fullWidth
+                  value={buildName}
+                  onChange={({ target }) => setBuildName(target.value)}
+                />
                 <TextField
                   label="Description"
                   variant="outlined"
@@ -80,6 +87,8 @@ export default function Home(): React.ReactElement {
                   multiline
                   rows={3}
                   rowsMax={6}
+                  value={description}
+                  onChange={({ target }) => setDescription(target.value)}
                 />
               </FormSection>
             </FormControl>
@@ -95,7 +104,7 @@ export default function Home(): React.ReactElement {
                   moveDown={() => move(index, 'down')}
                   remove={() => remove(index)}
                   insert={() => insert(index)}
-                  update={(description: string, type?: ComponentType) => update(index, description, type)}
+                  update={(desc: string, type?: ComponentType) => update(index, desc, type)}
                   lock={() => lock(index)}
                   unlock={() => unlock(index)}
                   numComponents={components.length}
