@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { Container, Typography, Button, makeStyles, Theme, Tooltip, IconButton, Paper } from '@material-ui/core'
+import { Container, Typography, Button, makeStyles, Theme, Tooltip, IconButton, Paper, Modal } from '@material-ui/core'
 import Grid from '@material-ui/core/Grid'
 import Box from '@material-ui/core/Box'
 import AddCircleOutlineOutlinedIcon from '@material-ui/icons/AddCircleOutlineOutlined'
@@ -30,6 +30,10 @@ const useStyles = makeStyles((theme: Theme) => ({
     fontStyle: 'italic',
     marginTop: theme.spacing(1),
     textTransform: 'lowercase',
+    background: theme.palette.background.paper,
+    // background: `-webkit-linear-gradient(120deg, #e5fe15, #ff2daa)`,
+    WebkitBackgroundClip: 'text',
+    WebkitTextFillColor: 'transparent',
   },
   toolbar: {
     position: 'fixed',
@@ -39,16 +43,49 @@ const useStyles = makeStyles((theme: Theme) => ({
     zIndex: 1000,
     padding: theme.spacing(2),
     borderRadius: 0,
+    display: 'flex',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+  },
+  '@keyframes backgroundAnimated': {
+    '0%': { backgroundPosition: '14% 0%' },
+    '50%': { backgroundPosition: '87% 100%' },
+    '100%': { backgroundPosition: '14% 0%' },
+  },
+  generateButton: {
+    background: '#59656B',
+    // background: theme.palette.primary.main,
+  },
+  generateButtonTextContainer: {
+    fontStyle: 'italic',
+    textTransform: 'lowercase',
+    background: `-webkit-linear-gradient(120deg, #e35aa8, #fee998, #b8ebf9, #fee998, #e35aa8)`,
+    backgroundSize: '400% 400%',
+    animation: `$backgroundAnimated 4000ms ${theme.transitions.easing.easeInOut} infinite`,
+    WebkitBackgroundClip: 'text',
+    WebkitTextFillColor: 'transparent',
+  },
+  modalContent: {
+    height: '100%',
+    display: 'flex',
+    alignItems: 'center',
+    pointerEvents: 'none',
+    backdropFilter: 'blur(10px)',
+  },
+  outputImage: {
+    width: '100%',
+    maxWidth: '800px',
   },
 }))
 
 export default function Home(): React.ReactElement {
   const classes = useStyles()
+  const { components, move, insert, update, remove, lock, unlock, lockAll, unlockAll, getInput } = useComponents()
 
   const [buildName, setBuildName] = useState('')
   const [description, setDescription] = useState('')
-  const { components, move, insert, update, remove, lock, unlock, lockAll, unlockAll, getInput } = useComponents()
   const [src, setSrc] = useState('')
+  const [isModalOpen, setIsModalOpen] = useState(false)
 
   const submit = () => {
     const config: Config = {
@@ -57,6 +94,7 @@ export default function Home(): React.ReactElement {
       components: getInput(),
     }
     setSrc(`/api/build?c=${encodeURIComponent(JSON.stringify(config))}`)
+    setIsModalOpen(true)
   }
 
   return (
@@ -69,7 +107,6 @@ export default function Home(): React.ReactElement {
       </Grid>
       <Grid item md={4} xs={12}>
         <Box padding={2}>
-          <Typography>{src}</Typography>
           <form>
             <FormControl>
               <FormLabel>Information</FormLabel>
@@ -94,7 +131,6 @@ export default function Home(): React.ReactElement {
                 />
               </FormSection>
             </FormControl>
-
             <FormControl>
               <FormLabel>Components</FormLabel>
               {components.map((component, index) => (
@@ -112,7 +148,6 @@ export default function Home(): React.ReactElement {
                   numComponents={components.length}
                 />
               ))}
-
               <Button
                 onClick={() => insert(components.length - 1)}
                 style={{ fontWeight: 900, letterSpacing: '0.1em', fontSize: 14 }}
@@ -145,17 +180,18 @@ export default function Home(): React.ReactElement {
                   </span>
                 </Tooltip>
               )}
-              <Tooltip title="Submit">
-                <span>
-                  <IconButton size="small" onClick={() => submit()}>
-                    <LockOpenVariantOutline />
-                  </IconButton>
-                </span>
-              </Tooltip>
+              <Button className={classes.generateButton} variant="contained" onClick={submit} title="make image">
+                <div className={classes.generateButtonTextContainer}>Make Image</div>
+              </Button>
             </Paper>
           </form>
         </Box>
       </Grid>
+      <Modal open={isModalOpen} onClose={() => setIsModalOpen(false)}>
+        <div className={classes.modalContent}>
+          <img src={src} className={classes.outputImage} />
+        </div>
+      </Modal>
     </Container>
   )
 }
