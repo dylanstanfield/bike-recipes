@@ -6,9 +6,9 @@ import { ComponentVM, ComponentType, ComponentInput } from '../types'
 export const useComponents = () => {
   const [components, setComponents] = useState<ComponentVM[]>([
     { type: 'frame', description: '', id: uuid(), locked: false },
-    { type: 'wheels', description: '', id: uuid(), locked: false },
-    { type: 'handlebars', description: '', id: uuid(), locked: false },
-    { type: 'shifters', description: '', id: uuid(), locked: false },
+    // { type: 'wheels', description: '', id: uuid(), locked: false },
+    // { type: 'handlebars', description: '', id: uuid(), locked: false },
+    // { type: 'shifters', description: '', id: uuid(), locked: false },
   ])
 
   const insert = (index: number) => {
