@@ -8,13 +8,14 @@ import {
   Tooltip,
   IconButton,
   Paper,
+  CircularProgress,
   Modal,
   lighten,
 } from '@material-ui/core'
 import Grid from '@material-ui/core/Grid'
 import Box from '@material-ui/core/Box'
 import AddCircleOutlineOutlinedIcon from '@material-ui/icons/AddCircleOutlineOutlined'
-import { LockOutline, LockOpenVariantOutline } from 'mdi-material-ui'
+import { LockOutline, ExpandAllOutline, CollapseAllOutline } from 'mdi-material-ui'
 
 import { useComponents } from '../hooks/useComponents'
 import { FormLabel } from '../components/FormLabel'
@@ -67,18 +68,15 @@ const useStyles = makeStyles((theme: Theme) => ({
     justifyContent: 'space-between',
     alignItems: 'center',
   },
-  generateButton: {
-    background: theme.palette.primary.main,
-  },
   '@keyframes shine': {
     to: { backgroundPosition: '200% center' },
   },
   generateButtonTextContainer: {
     fontStyle: 'italic',
     textTransform: 'lowercase',
-    background: `-webkit-linear-gradient(0deg, ${theme.palette.background.paper}, #C8A2C8, ${theme.palette.background.paper})`,
+    background: `-webkit-linear-gradient(0deg, ${theme.palette.background.paper}, ${theme.palette.background.paper}, #f542a4, ${theme.palette.background.paper})`,
     backgroundSize: '200% auto',
-    animation: `$shine 1333ms linear infinite`,
+    animation: `$shine 2000ms linear infinite`,
     WebkitBackgroundClip: 'text',
     WebkitTextFillColor: 'transparent',
   },
@@ -86,10 +84,23 @@ const useStyles = makeStyles((theme: Theme) => ({
     height: '100%',
     display: 'flex',
     alignItems: 'center',
+    justifyContent: 'center',
     pointerEvents: 'none',
     backdropFilter: 'blur(10px)',
+    position: 'relative',
   },
-  outputImage: {
+  imageLoading: {
+    zIndex: 1,
+    width: '100%',
+    maxWidth: '800px',
+    pointerEvents: 'visible',
+    position: 'absolute',
+    display: 'flex',
+    justifyContent: 'center',
+  },
+  image: {
+    zIndex: 2,
+    pointerEvents: 'visible',
     width: '100%',
     maxWidth: '800px',
   },
@@ -188,24 +199,24 @@ export default function Home(): React.ReactElement {
                 <Grid item xs={12}>
                   <Paper elevation={3} variant="outlined" className={classes.toolbar}>
                     {components.some(({ locked }) => !locked) && (
-                      <Tooltip title="Lock All">
+                      <Tooltip title="Collapse All">
                         <span>
                           <IconButton size="small" onClick={() => lockAll()}>
-                            <LockOpenVariantOutline />
+                            <CollapseAllOutline />
                           </IconButton>
                         </span>
                       </Tooltip>
                     )}
                     {components.every(({ locked }) => locked) && (
-                      <Tooltip title="Unlock All">
+                      <Tooltip title="Expand All">
                         <span>
                           <IconButton size="small" onClick={() => unlockAll()}>
-                            <LockOutline />
+                            <ExpandAllOutline />
                           </IconButton>
                         </span>
                       </Tooltip>
                     )}
-                    <Button className={classes.generateButton} variant="contained" onClick={submit} title="make image">
+                    <Button color="primary" variant="contained" onClick={submit} title="make image">
                       <div className={classes.generateButtonTextContainer}>Make Recipe</div>
                     </Button>
                   </Paper>
@@ -216,7 +227,10 @@ export default function Home(): React.ReactElement {
         </Grid>
         <Modal open={isModalOpen} onClose={() => setIsModalOpen(false)}>
           <div className={classes.modalContent}>
-            <img src={src} className={classes.outputImage} />
+            <div className={classes.imageLoading}>
+              <CircularProgress color="secondary" />
+            </div>
+            <img src={src} className={classes.image} />
           </div>
         </Modal>
       </Container>

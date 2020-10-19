@@ -14,13 +14,11 @@ const useStyles = makeStyles<Theme, StyleProps>((theme: Theme) => ({
     fontSize: 14,
     letterSpacing: '0.1em',
     background: theme.palette.background.paper,
-    paddingRight: theme.spacing(0.5),
   },
 }))
 
 export const TextField: React.FC<TextFieldProps & StyleProps> = (props) => {
   const { InputProps, disableMarginBottom, ...rest } = props
-
   const classes = useStyles({ disableMarginBottom })
 
   return (

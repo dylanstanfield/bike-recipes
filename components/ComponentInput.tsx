@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 import IconButton from '@material-ui/core/IconButton'
 import Tooltip from '@material-ui/core/Tooltip'
 
-import { ShapeRectanglePlus, ArrowDownThinCircleOutline, LockOutline, LockOpenVariantOutline } from 'mdi-material-ui'
+import { ShapeRectanglePlus, ArrowDownThinCircleOutline, MinusBoxOutline, PlusBoxOutline } from 'mdi-material-ui'
 import DeleteOutlineIcon from '@material-ui/icons/DeleteOutline'
 import Autocomplete, { AutocompleteRenderGroupParams } from '@material-ui/lab/Autocomplete'
 import { makeStyles, Theme, FormControl, Box, Typography, ListSubheader, Divider } from '@material-ui/core'
@@ -73,13 +73,15 @@ const useStyles = makeStyles((theme: Theme) => ({
     background: theme.palette.background.paper,
     top: -theme.spacing(1), // fixes bug
   },
-  collapsedContainer: {},
   collapsedDescription: {
     flex: 1,
     marginRight: theme.spacing(1),
   },
   componentsPopover: {
     border: `2px solid ${theme.palette.primary.main}`,
+  },
+  toolbar: {
+    marginBottom: theme.spacing(2),
   },
 }))
 
@@ -116,12 +118,12 @@ export const ComponentInput: React.FC<ComponentInputProps> = ({
   if (component.locked) {
     return (
       <FormSection>
-        <Box display="flex" alignItems="center" className={classes.collapsedContainer}>
+        <Box display="flex" alignItems="center">
           <Typography className={classes.collapsedDescription}>{getCollapsedLabel()}</Typography>
-          <Tooltip title="Unlock">
+          <Tooltip title="Expand">
             <span>
               <IconButton size="small" onClick={() => unlock()}>
-                <LockOutline />
+                <PlusBoxOutline />
               </IconButton>
             </span>
           </Tooltip>
@@ -132,41 +134,7 @@ export const ComponentInput: React.FC<ComponentInputProps> = ({
 
   return (
     <FormSection>
-      <Autocomplete
-        fullWidth
-        renderOption={(props) => (
-          <Typography variant="body1" className={classes.option}>
-            {props.label}
-          </Typography>
-        )}
-        options={componentOptions}
-        groupBy={(option) => option.value.categoryLabel}
-        renderGroup={(params: AutocompleteRenderGroupParams) => (
-          <React.Fragment key={params.key}>
-            <ListSubheader className={classes.optionGroupHeader}>{params.group}</ListSubheader>
-            {params.children}
-          </React.Fragment>
-        )}
-        classes={{ paper: classes.componentsPopover }}
-        value={
-          componentOptions.find((opt) => opt.value.type === component.type) || {
-            label: '',
-            value: { type: '', category: '', categoryLabel: '' },
-          }
-        }
-        onChange={(_, option) => update(component.description, option?.value.type as ComponentType)}
-        getOptionLabel={(option) => option.label}
-        getOptionSelected={(option, selected) => option.value.type === selected.value.type}
-        renderInput={(params) => <TextField {...params} label="Component" variant="outlined" />}
-      />
-      <TextField
-        label="Description"
-        variant="outlined"
-        fullWidth
-        value={component.description}
-        onChange={({ target }) => update(target.value, component.type)}
-      />
-      <Box display="flex" justifyContent="space-between">
+      <Box display="flex" justifyContent="space-between" className={classes.toolbar}>
         <Box display="flex">
           <Tooltip title="Move Up">
             <span>
@@ -204,15 +172,50 @@ export const ComponentInput: React.FC<ComponentInputProps> = ({
           </Tooltip>
         </Box>
         <Box>
-          <Tooltip title="Lock">
+          <Tooltip title="Collapse">
             <span>
               <IconButton className={classes.buttonRight} size="small" onClick={() => lock()}>
-                <LockOpenVariantOutline />
+                <MinusBoxOutline />
               </IconButton>
             </span>
           </Tooltip>
         </Box>
       </Box>
+      <Autocomplete
+        fullWidth
+        renderOption={(props) => (
+          <Typography variant="body1" className={classes.option}>
+            {props.label}
+          </Typography>
+        )}
+        options={componentOptions}
+        groupBy={(option) => option.value.categoryLabel}
+        renderGroup={(params: AutocompleteRenderGroupParams) => (
+          <React.Fragment key={params.key}>
+            <ListSubheader className={classes.optionGroupHeader}>{params.group}</ListSubheader>
+            {params.children}
+          </React.Fragment>
+        )}
+        classes={{ paper: classes.componentsPopover }}
+        value={
+          componentOptions.find((opt) => opt.value.type === component.type) || {
+            label: '',
+            value: { type: '', category: '', categoryLabel: '' },
+          }
+        }
+        onChange={(_, option) => update(component.description, option?.value.type as ComponentType)}
+        getOptionLabel={(option) => option.label}
+        getOptionSelected={(option, selected) => option.value.type === selected.value.type}
+        renderInput={(params) => <TextField {...params} label="Component" variant="outlined" />}
+      />
+      <TextField
+        label="Description"
+        variant="outlined"
+        fullWidth
+        value={component.description}
+        disableMarginBottom
+        onChange={({ target }) => update(target.value, component.type)}
+      />
     </FormSection>
   )
 }
