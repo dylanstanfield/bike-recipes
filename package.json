@@ -1,0 +1,38 @@
+{
+  "name": "bike-recipes",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/dylanstanfield/byob.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/dylanstanfield/byob/issues"
+  },
+  "homepage": "https://github.com/dylanstanfield/byob#readme",
+  "dependencies": {
+    "@material-ui/core": "^4.11.0",
+    "@material-ui/lab": "^4.0.0-alpha.56",
+    "mdi-material-ui": "^6.20.0",
+    "next": "^10.0.0",
+    "react": "^17.0.1",
+    "react-dom": "^17.0.1",
+    "uuid": "^8.3.1"
+  },
+  "devDependencies": {
+    "@types/node": "^14.14.6",
+    "@types/react": "^16.9.55",
+    "@types/uuid": "^8.3.0",
+    "base64-inline-loader": "^1.1.1",
+    "typescript": "^4.0.5"
+  }
+}
