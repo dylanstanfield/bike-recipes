@@ -4,7 +4,7 @@ import { makeStyles, Theme, TextField, Button, Typography } from '@material-ui/c
 import { Plus } from 'mdi-material-ui'
 
 import { ComponentInput } from '../components/ComponentInput'
-import { useComponents } from '../hooks/useComponents'
+import { useComponentStore } from '../hooks/useComponentStore'
 
 const useStyles = makeStyles((theme: Theme) => ({
   title: {
@@ -25,17 +25,14 @@ const useStyles = makeStyles((theme: Theme) => ({
 const MakePage = () => {
   const classes = useStyles()
 
-  const { components, insert } = useComponents()
-
-  console.log(components)
+  const components = useComponentStore((state) => state.components)
+  const insert = useComponentStore((state) => state.insert)
 
   return (
     <Fragment>
-      <Typography className={classes.title} component="h2" variant="body1">
-        Make a bike recipe
-      </Typography>
       <Typography className={classes.title} component="aside" variant="body2">
-        Fill in the boxes below to generate an image of yer bike build thatcha can share with friends.
+        Fill in the boxes below to generate an image of your bike build that ya can share with friends or pass down to
+        your children.
       </Typography>
 
       <Typography className={classes.label} component="label" variant="body1">
@@ -47,13 +44,14 @@ const MakePage = () => {
       <Typography className={classes.label} component="label" variant="body1">
         Components
       </Typography>
-      {components.map((component, index) => (
-        <ComponentInput key={component.id} component={component} index={index} length={components.length} />
+      {components.map(({ id }, index) => (
+        <ComponentInput key={id} index={index} />
       ))}
       <Button
         className={classes.addComponentButton}
         fullWidth
-        variant="outlined"
+        variant="contained"
+        color="secondary"
         startIcon={<Plus />}
         onClick={() => insert(components.length - 1)}
       >

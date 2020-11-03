@@ -3,19 +3,20 @@ import { TextField, Typography, InputAdornment, IconButton, Menu, MenuItem, List
 import { Autocomplete } from '@material-ui/lab'
 import { DotsVertical, ArrowUpCircle, ArrowDownCircle, Close, Delete } from 'mdi-material-ui'
 
-import { Component } from '../types/schema'
-import { useComponents } from '../hooks/useComponents'
+import { useComponentStore } from '../hooks/useComponentStore'
 
 interface ComponentInputProps {
-  component: Component
   index: number
-  length: number
 }
 
 const options = ['shimano thing', 'sram thing']
+const placeholders = ['Frame', 'Bars', 'Tires']
 
-export const ComponentInput: React.FC<ComponentInputProps> = ({ component, index, length }) => {
-  const { update, move, remove, insert } = useComponents()
+export const ComponentInput: React.FC<ComponentInputProps> = ({ index }) => {
+  const components = useComponentStore((state) => state.components)
+  const update = useComponentStore((state) => state.update)
+  const remove = useComponentStore((state) => state.remove)
+  const move = useComponentStore((state) => state.move)
   const [menuAnchor, setMenuAnchor] = useState<null | HTMLElement>(null)
 
   const openMenu = (event: React.MouseEvent<HTMLButtonElement>) => {
@@ -29,16 +30,19 @@ export const ComponentInput: React.FC<ComponentInputProps> = ({ component, index
   return (
     <Autocomplete
       freeSolo
-      key={component.id}
-      options={options.map((option) => option)}
+      value={components[index].text}
+      onChange={(_, text) => update(index, text ?? '')}
+      key={components[index].id}
+      options={options}
       renderInput={(params) => (
         <TextField
           {...params}
+          placeholder={placeholders[index]}
           margin="normal"
           variant="outlined"
-          value={component.text}
-          onChange={({ target }) => update(index, target.value)}
           InputProps={{
+            ...params.InputProps,
+            className: undefined, // remove params className to fix custom end adornment
             endAdornment: (
               <Fragment>
                 <InputAdornment position="end">
@@ -53,7 +57,7 @@ export const ComponentInput: React.FC<ComponentInputProps> = ({ component, index
                     </ListItemIcon>
                     <Typography>Move Up</Typography>
                   </MenuItem>
-                  <MenuItem disabled={index === length - 1} onClick={() => move(index, 'down')}>
+                  <MenuItem disabled={index === components.length - 1} onClick={() => move(index, 'down')}>
                     <ListItemIcon>
                       <ArrowDownCircle fontSize="small" />
                     </ListItemIcon>
@@ -65,17 +69,11 @@ export const ComponentInput: React.FC<ComponentInputProps> = ({ component, index
                     </ListItemIcon>
                     <Typography>Clear</Typography>
                   </MenuItem>
-                  <MenuItem disabled={length <= 1} onClick={() => remove(index)}>
+                  <MenuItem disabled={components.length <= 1} onClick={() => remove(index)}>
                     <ListItemIcon>
                       <Delete fontSize="small" />
                     </ListItemIcon>
                     <Typography>Delete</Typography>
-                  </MenuItem>
-                  <MenuItem onClick={() => insert(index)}>
-                    <ListItemIcon>
-                      <Delete fontSize="small" />
-                    </ListItemIcon>
-                    <Typography>Insert After</Typography>
                   </MenuItem>
                 </Menu>
               </Fragment>

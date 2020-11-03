@@ -5,7 +5,6 @@ import { ThemeProvider } from '@material-ui/core/styles'
 import CssBaseline from '@material-ui/core/CssBaseline'
 import { Box, Container, Typography } from '@material-ui/core'
 import { theme } from '../styles/theme'
-
 import '../styles/globals.css'
 
 const MyApp: React.FC<AppProps> = ({ Component, pageProps }) => {
