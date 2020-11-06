@@ -1,4 +1,4 @@
-export interface Component {
+export interface Part {
   id: string
   text: string
 }

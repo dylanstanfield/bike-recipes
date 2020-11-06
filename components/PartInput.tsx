@@ -3,20 +3,19 @@ import { TextField, Typography, InputAdornment, IconButton, Menu, MenuItem, List
 import { Autocomplete } from '@material-ui/lab'
 import { DotsVertical, ArrowUpCircle, ArrowDownCircle, Close, Delete } from 'mdi-material-ui'
 
-import { useComponentStore } from '../hooks/useComponentStore'
+import { usePartStore } from '../hooks/usePartStore'
 
-interface ComponentInputProps {
+interface PartInputProps {
   index: number
 }
 
 const options = ['shimano thing', 'sram thing']
-const placeholders = ['Frame', 'Bars', 'Tires']
 
-export const ComponentInput: React.FC<ComponentInputProps> = ({ index }) => {
-  const components = useComponentStore((state) => state.components)
-  const update = useComponentStore((state) => state.update)
-  const remove = useComponentStore((state) => state.remove)
-  const move = useComponentStore((state) => state.move)
+export const PartInput: React.FC<PartInputProps> = ({ index }) => {
+  const parts = usePartStore((state) => state.parts)
+  const update = usePartStore((state) => state.update)
+  const remove = usePartStore((state) => state.remove)
+  const move = usePartStore((state) => state.move)
   const [menuAnchor, setMenuAnchor] = useState<null | HTMLElement>(null)
 
   const openMenu = (event: React.MouseEvent<HTMLButtonElement>) => {
@@ -30,14 +29,14 @@ export const ComponentInput: React.FC<ComponentInputProps> = ({ index }) => {
   return (
     <Autocomplete
       freeSolo
-      value={components[index].text}
+      value={parts[index].text}
       onChange={(_, text) => update(index, text ?? '')}
-      key={components[index].id}
+      key={parts[index].id}
       options={options}
       renderInput={(params) => (
         <TextField
           {...params}
-          placeholder={placeholders[index]}
+          onChange={(e) => update(index, e.target.value ?? '')}
           margin="normal"
           variant="outlined"
           InputProps={{
@@ -57,7 +56,7 @@ export const ComponentInput: React.FC<ComponentInputProps> = ({ index }) => {
                     </ListItemIcon>
                     <Typography>Move Up</Typography>
                   </MenuItem>
-                  <MenuItem disabled={index === components.length - 1} onClick={() => move(index, 'down')}>
+                  <MenuItem disabled={index === parts.length - 1} onClick={() => move(index, 'down')}>
                     <ListItemIcon>
                       <ArrowDownCircle fontSize="small" />
                     </ListItemIcon>
@@ -69,7 +68,7 @@ export const ComponentInput: React.FC<ComponentInputProps> = ({ index }) => {
                     </ListItemIcon>
                     <Typography>Clear</Typography>
                   </MenuItem>
-                  <MenuItem disabled={components.length <= 1} onClick={() => remove(index)}>
+                  <MenuItem disabled={parts.length <= 1} onClick={() => remove(index)}>
                     <ListItemIcon>
                       <Delete fontSize="small" />
                     </ListItemIcon>
