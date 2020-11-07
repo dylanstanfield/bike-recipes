@@ -1,5 +1,4 @@
-import { Fragment, useState } from 'react'
-import { v4 as uuid } from 'uuid'
+import { Fragment } from 'react'
 import { makeStyles, Theme, TextField, Button, Typography } from '@material-ui/core'
 import { Plus } from 'mdi-material-ui'
 
@@ -35,21 +34,20 @@ const MakePage = () => {
   return (
     <Fragment>
       <Typography className={classes.title} component="aside" variant="body2">
-        Fill in the boxes below to generate an image of your bike build that ya can share with friends or add to the
-        family cookbook.
+        Fill in the boxes below to generate an image of your bike build to share with friends.
       </Typography>
 
       <Typography className={classes.label} component="label" variant="body1">
         Subject
       </Typography>
       <TextField margin="normal" label="Name" variant="outlined" fullWidth />
-      <TextField margin="normal" label="Description" variant="outlined" fullWidth multiline rows={3} />
+      <TextField margin="normal" label="Description" variant="outlined" fullWidth multiline rows={3} rowsMax={6} />
 
       <Typography className={classes.label} component="label" variant="body1">
         Part List
       </Typography>
       <Typography className={classes.sublabel} component="aside" variant="body2">
-        Suggestions for parts are based on what other people have listed, but write whatever ya want.
+        Suggestions for parts are based on what other people have listed, but write whatever you'd like.
       </Typography>
       {parts.map(({ id }, index) => (
         <PartInput key={id} index={index} />

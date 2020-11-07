@@ -13,7 +13,9 @@ const options = ['shimano thing', 'sram thing']
 
 export const PartInput: React.FC<PartInputProps> = ({ index }) => {
   const parts = usePartStore((state) => state.parts)
-  const update = usePartStore((state) => state.update)
+  const updateSuggestion = usePartStore((state) => state.updateSuggestion)
+  const updateInput = usePartStore((state) => state.updateInput)
+  const clear = usePartStore((state) => state.clear)
   const remove = usePartStore((state) => state.remove)
   const move = usePartStore((state) => state.move)
   const [menuAnchor, setMenuAnchor] = useState<null | HTMLElement>(null)
@@ -29,14 +31,16 @@ export const PartInput: React.FC<PartInputProps> = ({ index }) => {
   return (
     <Autocomplete
       freeSolo
-      value={parts[index].text}
-      onChange={(_, text) => update(index, text ?? '')}
+      autoHighlight
+      value={parts[index].suggestion}
+      onChange={(_, suggestion) => updateSuggestion(index, suggestion ?? '')}
+      inputValue={parts[index].input}
+      onInputChange={(_, input) => updateInput(index, input ?? '')}
       key={parts[index].id}
       options={options}
       renderInput={(params) => (
         <TextField
           {...params}
-          onChange={(e) => update(index, e.target.value ?? '')}
           margin="normal"
           variant="outlined"
           InputProps={{
@@ -62,7 +66,7 @@ export const PartInput: React.FC<PartInputProps> = ({ index }) => {
                     </ListItemIcon>
                     <Typography>Move Down</Typography>
                   </MenuItem>
-                  <MenuItem onClick={() => update(index, '')}>
+                  <MenuItem onClick={() => clear(index)}>
                     <ListItemIcon>
                       <Close fontSize="small" />
                     </ListItemIcon>
@@ -83,3 +87,5 @@ export const PartInput: React.FC<PartInputProps> = ({ index }) => {
     />
   )
 }
+
+

@@ -26,8 +26,8 @@ const MyApp: React.FC<AppProps> = ({ Component, pageProps }) => {
       <ThemeProvider theme={theme}>
         <CssBaseline />
         <Container maxWidth="sm">
-          <Box paddingY={3} style={{ borderBottom: '2px solid #e08e8c' }}>
-            <Typography component="h1" variant="body1" style={{ fontStyle: 'italic' }} align="center">
+          <Box paddingY={3} style={{ borderBottom: '3px solid #e08e8c' }}>
+            <Typography component="h1" variant="body1" style={{ fontStyle: 'italic' }}>
               bike recipes
             </Typography>
           </Box>
