@@ -13,8 +13,7 @@ const options = ['shimano thing', 'sram thing']
 
 export const PartInput: React.FC<PartInputProps> = ({ index }) => {
   const parts = usePartStore((state) => state.parts)
-  const updateSuggestion = usePartStore((state) => state.updateSuggestion)
-  const updateInput = usePartStore((state) => state.updateInput)
+  const update = usePartStore((state) => state.update)
   const clear = usePartStore((state) => state.clear)
   const remove = usePartStore((state) => state.remove)
   const move = usePartStore((state) => state.move)
@@ -28,14 +27,16 @@ export const PartInput: React.FC<PartInputProps> = ({ index }) => {
     setMenuAnchor(null)
   }
 
+  const part = parts[index]
+
   return (
     <Autocomplete
       freeSolo
       autoHighlight
-      value={parts[index].suggestion}
-      onChange={(_, suggestion) => updateSuggestion(index, suggestion ?? '')}
-      inputValue={parts[index].input}
-      onInputChange={(_, input) => updateInput(index, input ?? '')}
+      value={part.suggestion.value}
+      onChange={(_, value) => update(index, value ?? '', 'suggestion')}
+      inputValue={part.custom.value}
+      onInputChange={(_, value) => update(index, value ?? '', 'custom')}
       key={parts[index].id}
       options={options}
       renderInput={(params) => (

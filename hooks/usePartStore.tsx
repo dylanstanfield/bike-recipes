@@ -4,11 +4,11 @@ import { v4 as uuid } from 'uuid'
 import { PartVM } from '../types/schema'
 
 type Direction = 'up' | 'down'
+type InputType = 'suggestion' | 'custom'
 
 type PartStore = {
   parts: PartVM[]
-  updateSuggestion: (index: number, suggestion: string) => void
-  updateInput: (index: number, suggestion: string) => void
+  update: (index: number, value: string, type: InputType) => void
   clear: (index: number) => void
   insert: (index: number) => void
   remove: (index: number) => void
@@ -17,23 +17,15 @@ type PartStore = {
 
 export const usePartStore = create<PartStore>((set) => ({
   parts: [
-    { id: uuid(), suggestion: '', input: '' },
-    { id: uuid(), suggestion: '', input: '' },
-    { id: uuid(), suggestion: '', input: '' },
+    { id: uuid(), suggestion: { value: '', updated: 0 }, custom: { value: '', updated: 0 } },
+    { id: uuid(), suggestion: { value: '', updated: 0 }, custom: { value: '', updated: 0 } },
+    { id: uuid(), suggestion: { value: '', updated: 0 }, custom: { value: '', updated: 0 } },
   ],
-  updateSuggestion: (index: number, suggestion: string) =>
+  update: (index: number, value: string, type: InputType) =>
     set((state) => {
       const updated = state.parts.map((part, i) => ({
         ...part,
-        suggestion: index === i ? suggestion : part.suggestion,
-      }))
-      return { parts: updated }
-    }),
-  updateInput: (index: number, input: string) =>
-    set((state) => {
-      const updated = state.parts.map((part, i) => ({
-        ...part,
-        input: index === i ? input : part.input,
+        [type]: index === i ? { value, updated: Date.now() } : part[type]
       }))
       return { parts: updated }
     }),
@@ -41,15 +33,15 @@ export const usePartStore = create<PartStore>((set) => ({
     set((state) => {
       const updated = state.parts.map((part, i) => ({
         ...part,
-        input: index === i ? '' : part.input,
-        suggestion: index === i ? '' : part.suggestion,
+        custom: index === i ? { value: '', updated: Date.now() } : part.custom,
+        suggestion: index === i ? { value: '', updated: Date.now() } : part.suggestion,
       }))
       return { parts: updated }
     }),
   insert: (index: number) =>
     set((state) => {
       const copy = [...state.parts]
-      copy.splice(index + 1, 0, { id: uuid(), suggestion: '', input: '' })
+      copy.splice(index + 1, 0, { id: uuid(), suggestion: { value: '', updated: 0 }, custom: { value: '', updated: 0 } })
       return { parts: copy }
     }),
   remove: (index: number) =>

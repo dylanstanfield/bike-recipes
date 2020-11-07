@@ -3,8 +3,13 @@ export interface Part {
   text: string
 }
 
+interface Input {
+  value: string
+  updated: number
+}
+
 export interface PartVM {
   id: string
-  input: string
-  suggestion: string
+  custom: Input
+  suggestion: Input
 }
