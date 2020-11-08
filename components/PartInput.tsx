@@ -1,7 +1,7 @@
 import { Fragment, useState } from 'react'
-import { TextField, Typography, InputAdornment, IconButton, Menu, MenuItem, ListItemIcon } from '@material-ui/core'
+import { TextField, Typography, InputAdornment, IconButton, Menu, MenuItem, ListItemIcon, makeStyles, Theme } from '@material-ui/core'
 import { Autocomplete } from '@material-ui/lab'
-import { DotsVertical, ArrowUpCircle, ArrowDownCircle, Close, Delete } from 'mdi-material-ui'
+import { DotsVertical, ArrowUpCircle, ArrowDownCircle, Delete, Plus } from 'mdi-material-ui'
 
 import { usePartStore } from '../hooks/usePartStore'
 
@@ -9,14 +9,22 @@ interface PartInputProps {
   index: number
 }
 
-const options = ['shimano thing', 'sram thing']
+const useStyles = makeStyles((theme: Theme) => ({
+  menuButton: {
+    fontStyle: 'italic',
+    textTransform: 'lowercase',
+  },
+}))
 
 export const PartInput: React.FC<PartInputProps> = ({ index }) => {
+  const classes = useStyles();
+
   const parts = usePartStore((state) => state.parts)
   const update = usePartStore((state) => state.update)
-  const clear = usePartStore((state) => state.clear)
   const remove = usePartStore((state) => state.remove)
   const move = usePartStore((state) => state.move)
+  const insert = usePartStore((state) => state.insert)
+
   const [menuAnchor, setMenuAnchor] = useState<null | HTMLElement>(null)
 
   const openMenu = (event: React.MouseEvent<HTMLButtonElement>) => {
@@ -38,7 +46,7 @@ export const PartInput: React.FC<PartInputProps> = ({ index }) => {
       inputValue={part.custom.value}
       onInputChange={(_, value) => update(index, value ?? '', 'custom')}
       key={parts[index].id}
-      options={options}
+      options={[]}
       renderInput={(params) => (
         <TextField
           {...params}
@@ -59,25 +67,25 @@ export const PartInput: React.FC<PartInputProps> = ({ index }) => {
                     <ListItemIcon>
                       <ArrowUpCircle fontSize="small" />
                     </ListItemIcon>
-                    <Typography>Move Up</Typography>
+                    <Typography className={classes.menuButton}>Move Up</Typography>
                   </MenuItem>
                   <MenuItem disabled={index === parts.length - 1} onClick={() => move(index, 'down')}>
                     <ListItemIcon>
                       <ArrowDownCircle fontSize="small" />
                     </ListItemIcon>
-                    <Typography>Move Down</Typography>
+                    <Typography className={classes.menuButton}>Move Down</Typography>
                   </MenuItem>
-                  <MenuItem onClick={() => clear(index)}>
+                  <MenuItem onClick={() => insert(index)}>
                     <ListItemIcon>
-                      <Close fontSize="small" />
+                      <Plus fontSize="small" />
                     </ListItemIcon>
-                    <Typography>Clear</Typography>
+                    <Typography className={classes.menuButton}>Add After</Typography>
                   </MenuItem>
                   <MenuItem disabled={parts.length <= 1} onClick={() => remove(index)}>
                     <ListItemIcon>
                       <Delete fontSize="small" />
                     </ListItemIcon>
-                    <Typography>Delete</Typography>
+                    <Typography className={classes.menuButton}>Delete</Typography>
                   </MenuItem>
                 </Menu>
               </Fragment>

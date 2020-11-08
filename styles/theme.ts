@@ -5,10 +5,10 @@ import VulfMonoItalicWoff from '../fonts/vulf-mono/Vulf-Mono-Italic.woff'
 import VulfMonoBlackWoff from '../fonts/vulf-mono/Vulf-Mono-Black.woff'
 import VulfMonoBlackItalicWoff from '../fonts/vulf-mono/Vulf-Mono-Black-Italic.woff'
 
+const navy = '#00022e'
 const olive = '#6B6A4E'
-const lightOlive = '#B8B574'
-const blue = '#59656B'
-const lightRed = '#B87D83'
+const offwhite = '#edecdd';
+const lightRed = '#e08e8c'
 
 const VulfMonoRegular = {
   fontFamily: 'Vulf Mono',
@@ -57,22 +57,16 @@ const VulfMonoBlackItalic = {
 
 export const theme = createMuiTheme({
   palette: {
-    primary: {
-      main: olive,
-    },
-    secondary: {
-      main: darken('#4C5669', 0.5),
-    },
-    error: {
-      main: lightRed,
-    },
+    primary: { main: navy },
+    secondary: { main: olive },
+    error: { main: lightRed },
     background: {
-      default: '#edecdd',
-      paper: lighten(lightOlive, 0.9),
+      default: offwhite,
+      paper: lighten(offwhite, 0.9),
     },
     text: {
-      primary: darken(blue, 0.2),
-      secondary: lighten(blue, 0.2),
+      primary: lighten(navy, 0.3),
+      secondary: lighten(navy, 0.5),
     },
   },
   typography: {

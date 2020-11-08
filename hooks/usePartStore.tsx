@@ -9,7 +9,6 @@ type InputType = 'suggestion' | 'custom'
 type PartStore = {
   parts: PartVM[]
   update: (index: number, value: string, type: InputType) => void
-  clear: (index: number) => void
   insert: (index: number) => void
   remove: (index: number) => void
   move: (index: number, direction: Direction) => void
@@ -26,15 +25,6 @@ export const usePartStore = create<PartStore>((set) => ({
       const updated = state.parts.map((part, i) => ({
         ...part,
         [type]: index === i ? { value, updated: Date.now() } : part[type]
-      }))
-      return { parts: updated }
-    }),
-  clear: (index: number) =>
-    set((state) => {
-      const updated = state.parts.map((part, i) => ({
-        ...part,
-        custom: index === i ? { value: '', updated: Date.now() } : part.custom,
-        suggestion: index === i ? { value: '', updated: Date.now() } : part.suggestion,
       }))
       return { parts: updated }
     }),
