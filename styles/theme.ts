@@ -1,4 +1,4 @@
-import { createMuiTheme, lighten, darken } from '@material-ui/core/styles'
+import { createMuiTheme, lighten } from '@material-ui/core/styles'
 
 import VulfMonoRegularWoff from '../fonts/vulf-mono/Vulf-Mono-Regular.woff'
 import VulfMonoItalicWoff from '../fonts/vulf-mono/Vulf-Mono-Italic.woff'
@@ -8,7 +8,7 @@ import VulfMonoBlackItalicWoff from '../fonts/vulf-mono/Vulf-Mono-Black-Italic.w
 const navy = '#00022e'
 const olive = '#6B6A4E'
 const offwhite = '#edecdd';
-const lightRed = '#e08e8c'
+const lightRed = '#ee6562'
 
 const VulfMonoRegular = {
   fontFamily: 'Vulf Mono',

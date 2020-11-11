@@ -2,12 +2,13 @@ import { makeStyles, Theme, Box, Typography } from '@material-ui/core'
 
 const useStyles = makeStyles((theme: Theme) => ({
   container: {
-    borderBottom: `3px solid ${theme.palette.error.main}`,
+    borderBottom: `2px solid ${theme.palette.error.main}`,
   },
   title: {
     textTransform: 'lowercase',
     fontStyle: 'italic',
-  }
+    display: 'inline',
+  },
 }))
 
 export const Header: React.FC = () => {

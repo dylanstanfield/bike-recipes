@@ -3,7 +3,7 @@ import { TextField, Typography, InputAdornment, IconButton, Menu, MenuItem, List
 import { Autocomplete } from '@material-ui/lab'
 import { DotsVertical, ArrowUpCircle, ArrowDownCircle, Delete, Plus } from 'mdi-material-ui'
 
-import { usePartStore } from '../hooks/usePartStore'
+import { useStore } from '../hooks/useStore'
 
 interface PartInputProps {
   index: number
@@ -17,13 +17,8 @@ const useStyles = makeStyles((theme: Theme) => ({
 }))
 
 export const PartInput: React.FC<PartInputProps> = ({ index }) => {
-  const classes = useStyles();
-
-  const parts = usePartStore((state) => state.parts)
-  const update = usePartStore((state) => state.update)
-  const remove = usePartStore((state) => state.remove)
-  const move = usePartStore((state) => state.move)
-  const insert = usePartStore((state) => state.insert)
+  const classes = useStyles()
+  const store = useStore()
 
   const [menuAnchor, setMenuAnchor] = useState<null | HTMLElement>(null)
 
@@ -35,17 +30,16 @@ export const PartInput: React.FC<PartInputProps> = ({ index }) => {
     setMenuAnchor(null)
   }
 
-  const part = parts[index]
+  const part = store.parts[index]
 
   return (
     <Autocomplete
       freeSolo
       autoHighlight
       value={part.suggestion.value}
-      onChange={(_, value) => update(index, value ?? '', 'suggestion')}
+      onChange={(_, value) => store.updatePart(index, value ?? '', 'suggestion')}
       inputValue={part.custom.value}
-      onInputChange={(_, value) => update(index, value ?? '', 'custom')}
-      key={parts[index].id}
+      onInputChange={(_, value) => store.updatePart(index, value ?? '', 'custom')}
       options={[]}
       renderInput={(params) => (
         <TextField
@@ -58,30 +52,30 @@ export const PartInput: React.FC<PartInputProps> = ({ index }) => {
             endAdornment: (
               <Fragment>
                 <InputAdornment position="end">
-                  <IconButton onClick={(e) => openMenu(e)} edge="end">
+                  <IconButton tabIndex={-1} onClick={(e) => openMenu(e)} edge="end">
                     <DotsVertical />
                   </IconButton>
                 </InputAdornment>
                 <Menu anchorEl={menuAnchor} keepMounted open={Boolean(menuAnchor)} onClose={() => closeMenu()}>
-                  <MenuItem disabled={index === 0} onClick={() => move(index, 'up')}>
+                  <MenuItem disabled={index === 0} onClick={() => store.movePart(index, 'up')}>
                     <ListItemIcon>
                       <ArrowUpCircle fontSize="small" />
                     </ListItemIcon>
                     <Typography className={classes.menuButton}>Move Up</Typography>
                   </MenuItem>
-                  <MenuItem disabled={index === parts.length - 1} onClick={() => move(index, 'down')}>
+                  <MenuItem disabled={index === store.parts.length - 1} onClick={() => store.movePart(index, 'down')}>
                     <ListItemIcon>
                       <ArrowDownCircle fontSize="small" />
                     </ListItemIcon>
                     <Typography className={classes.menuButton}>Move Down</Typography>
                   </MenuItem>
-                  <MenuItem onClick={() => insert(index)}>
+                  <MenuItem onClick={() => store.insertPart(index)}>
                     <ListItemIcon>
                       <Plus fontSize="small" />
                     </ListItemIcon>
                     <Typography className={classes.menuButton}>Add After</Typography>
                   </MenuItem>
-                  <MenuItem disabled={parts.length <= 1} onClick={() => remove(index)}>
+                  <MenuItem disabled={store.parts.length <= 1} onClick={() => store.removePart(index)}>
                     <ListItemIcon>
                       <Delete fontSize="small" />
                     </ListItemIcon>
