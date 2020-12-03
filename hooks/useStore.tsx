@@ -1,7 +1,7 @@
 import create from 'zustand'
 import { v4 as uuid } from 'uuid'
 
-import { PartVM } from '../types/schema'
+import { PartVM, Recipe } from '../types/schema'
 
 type Direction = 'up' | 'down'
 type InputType = 'suggestion' | 'custom'
@@ -11,7 +11,9 @@ type Store = {
   description: string
   parts: PartVM[]
   public: boolean
+  pristine: boolean
   errors: { isPartsEmpty: boolean }
+  url: string
   updateName: (value: string) => void
   updateDescription: (value: string) => void
   updatePart: (index: number, value: string, type: InputType) => void
@@ -19,6 +21,15 @@ type Store = {
   removePart: (index: number) => void
   movePart: (index: number, direction: Direction) => void
   togglePublic: () => void
+  submit: () => void
+}
+
+const getText = ({ custom, suggestion }: PartVM): string => {
+  if (custom.updated > suggestion.updated) {
+    return custom.value;
+  }
+
+  return suggestion.value
 }
 
 export const useStore = create<Store>((set) => ({
@@ -30,7 +41,9 @@ export const useStore = create<Store>((set) => ({
     { id: uuid(), suggestion: { value: '', updated: 0 }, custom: { value: '', updated: 0 } },
   ],
   public: false,
+  pristine: true,
   errors: { isPartsEmpty: true },
+  url: '',
   updateName: (value: string) => set({ name: value }),
   updateDescription: (value: string) => set({ description: value }),
   updatePart: (index: number, value: string, type: InputType) =>
@@ -49,7 +62,7 @@ export const useStore = create<Store>((set) => ({
       }
       const isPartsEmpty = updated.every((part) => part.custom.value === '' && part.suggestion.value === '')
       const errors = { ...state.errors, isPartsEmpty }
-      return { parts: updated, errors }
+      return { parts: updated, errors, pristine: false }
     }),
   insertPart: (index: number) =>
     set((state) => {
@@ -75,4 +88,26 @@ export const useStore = create<Store>((set) => ({
       return { parts: copy }
     }),
   togglePublic: () => set((state) => ({ public: !state.public })),
+  submit: () => set((state) => {
+    const isPartsEmpty = state.parts.every((part) => part.custom.value === '' && part.suggestion.value === '')
+
+    if (isPartsEmpty) {
+      const errors = { ...state.errors, isPartsEmpty }
+      return { errors, pristine: false }
+    }
+
+    const recipe: Recipe = {
+      name: state.name,
+      description: state.description,
+      parts: state.parts
+        .map((part) => (getText(part)))
+        .filter(part => !!part),
+    }
+
+    const encoded = encodeURIComponent(JSON.stringify(recipe))
+
+    console.log(`/api/recipe?r=${encoded}`)
+
+    return { url: `/api/recipe?r=${encoded}` };
+  })
 }))

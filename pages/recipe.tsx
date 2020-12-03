@@ -85,13 +85,12 @@ const RecipePage = () => {
           variant="contained"
           color="secondary"
           startIcon={<Send />}
-          disabled={store.errors.isPartsEmpty}
-          onClick={() => {}}
+          onClick={() => store.submit()}
         >
           Make Recipe
         </Button>
       </Box>
-      {store.errors.isPartsEmpty && (
+      {store.errors.isPartsEmpty && !store.pristine && (
         <Typography className={classes.error} color="error" component="aside" variant="body2">
           Add some parts to create a recipe.
         </Typography>

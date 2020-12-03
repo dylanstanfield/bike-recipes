@@ -13,3 +13,13 @@ export interface PartVM {
   custom: Input
   suggestion: Input
 }
+
+export interface Recipe {
+  name?: string
+  description?: string
+  parts: string[]
+}
+
+export const FILE_TYPES = ['png', 'jpeg'] as const
+
+export type FileType = typeof FILE_TYPES[number]
