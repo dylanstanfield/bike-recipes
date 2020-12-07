@@ -5,10 +5,10 @@ import VulfMonoItalicWoff from '../fonts/vulf-mono/Vulf-Mono-Italic.woff'
 import VulfMonoBlackWoff from '../fonts/vulf-mono/Vulf-Mono-Black.woff'
 import VulfMonoBlackItalicWoff from '../fonts/vulf-mono/Vulf-Mono-Black-Italic.woff'
 
-const navy = '#00022e'
-const olive = '#6B6A4E'
-const offwhite = '#edecdd';
-const lightRed = '#ee6562'
+export const navy = '#00022e'
+export const olive = '#6B6A4E'
+export const offwhite = '#edecdd';
+export const lightRed = '#ee6562'
 
 const VulfMonoRegular = {
   fontFamily: 'Vulf Mono',

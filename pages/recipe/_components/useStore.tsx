@@ -1,7 +1,8 @@
 import create from 'zustand'
+import { persist } from 'zustand/middleware'
 import { v4 as uuid } from 'uuid'
 
-import { PartVM, Recipe } from '../types/schema'
+import { PartVM, Recipe } from '../../../types/schema'
 
 type Direction = 'up' | 'down'
 type InputType = 'suggestion' | 'custom'

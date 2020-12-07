@@ -3,7 +3,7 @@ import { TextField, Typography, InputAdornment, IconButton, Menu, MenuItem, List
 import { Autocomplete } from '@material-ui/lab'
 import { DotsVertical, ArrowUpCircle, ArrowDownCircle, Delete, Plus } from 'mdi-material-ui'
 
-import { useStore } from '../hooks/useStore'
+import { useStore } from './useStore'
 
 interface PartInputProps {
   index: number

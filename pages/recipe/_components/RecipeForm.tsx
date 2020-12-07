@@ -2,8 +2,9 @@ import { Fragment } from 'react'
 import { makeStyles, Theme, TextField, Button, Typography, FormControlLabel, Checkbox, Box, useTheme, useMediaQuery, Grid } from '@material-ui/core'
 import { Plus, Send } from 'mdi-material-ui'
 
-import { PartInput } from '../components/PartInput'
-import { useStore } from '../hooks/useStore'
+import { PartInput } from './PartInput'
+import { useStore } from './useStore'
+import { Preview } from './Preview'
 
 const useStyles = makeStyles((theme: Theme) => ({
   title: {
@@ -27,7 +28,7 @@ const useStyles = makeStyles((theme: Theme) => ({
   },
 }))
 
-const RecipePage = () => {
+export const RecipeForm = () => {
   const classes = useStyles()
 
   const theme = useTheme()
@@ -85,8 +86,7 @@ const RecipePage = () => {
           variant="contained"
           color="secondary"
           startIcon={<Send />}
-          onClick={() => store.submit()}
-        >
+          onClick={() => store.submit()}>
           Make Recipe
         </Button>
       </Box>
@@ -95,8 +95,21 @@ const RecipePage = () => {
           Add some parts to create a recipe.
         </Typography>
       )}
+      {store.url && (
+          <Fragment>
+              <Preview />
+              <Button
+                fullWidth
+                className={classes.addPartButton}
+                variant="contained"
+                color="secondary"
+                startIcon={<Send />}
+                href={store.url}
+                download="recipe.png">
+                Save Recipe
+            </Button>
+          </Fragment>
+      )}
     </Fragment>
   )
 }
-
-export default RecipePage

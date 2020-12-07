@@ -91,21 +91,7 @@ const css = (theme: string, fontSize: string): string => {
       padding: 20px;
       border: 10px solid ${foreground};
       height: 920px;
-    }
-    .header {
-      margin-bottom: 10px;
-    }
-    .heading {
-        font-family: 'Vulf Mono';
-        font-size: ${sanitize(fontSize)};
-        font-style: italic;
-        color: ${foreground};
-        overflow-wrap: break-word;
-        word-wrap: break-word;
-        hyphens: auto;
-        font-weight: bold;
-    }
-    .parts {
+
       font-family: 'Vulf Mono';
       font-size: ${sanitize(fontSize)};
       font-style: italic;
@@ -113,11 +99,22 @@ const css = (theme: string, fontSize: string): string => {
       overflow-wrap: break-word;
       word-wrap: break-word;
       hyphens: auto;
+      word-break: break-all;
+      overflow: hidden;
+    }
+    .header {
+      margin-bottom: 10px;
+    }
+    .title {
+        font-weight: bold;
+    }
+    .footer {
+        opacity: 0.333;
     }`
 }
 
 export const html = (recipe: Recipe): string => {
-  const fontSize = '44px'
+  const fontSize = '43px'
 
   return `<!DOCTYPE html>
 <html>
@@ -128,10 +125,11 @@ export const html = (recipe: Recipe): string => {
     <body>
         <div class="container">
           <div class="header">
-            ${recipe.name ? `<span class="heading">${emojify(sanitize(recipe.name.trim()))}&nbsp;</span>` : '' }
-            ${recipe.description ? `<span class="heading">${emojify(sanitize(recipe.description.trim()))}</span>` : '' }
+            ${recipe.name ? `<span class="title">${emojify(sanitize(recipe.name.trim()))}&nbsp;</span>` : '' }
+            ${recipe.description ? `<span class="title">${emojify(sanitize(recipe.description.trim()))}</span>` : '' }
           </div>
-          <span class="parts">${emojify(sanitize(recipe.parts.join(', ')))}</span>
+          <span>${emojify(sanitize(recipe.parts.join(', ')))}</span>
+          <span class="footer">https://bike.recipes/</span>
         </div>
     </body>
 </html>`
