@@ -36,6 +36,6 @@ export const screenshot = async (html: string, type: FileType, isDev: boolean): 
   await page.setViewport({ width: 1000, height: 1000 })
   await page.setContent(html)
 
-  const file = await page.screenshot({ type })
+  const file = (await page.screenshot({ type })) as Buffer
   return file
 }
