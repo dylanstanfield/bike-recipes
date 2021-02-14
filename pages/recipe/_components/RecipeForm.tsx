@@ -1,6 +1,6 @@
 import { Fragment } from 'react'
-import { makeStyles, Theme, TextField, Button, Typography, FormControlLabel, Checkbox, Box, useTheme, useMediaQuery, Grid } from '@material-ui/core'
-import { Plus, Send } from 'mdi-material-ui'
+import { makeStyles, Theme, TextField, Button, Typography, FormControlLabel, Checkbox, Box, useTheme, useMediaQuery } from '@material-ui/core'
+import { Plus, Download, Creation } from 'mdi-material-ui'
 
 import { PartInput } from './PartInput'
 import { useStore } from './useStore'
@@ -85,7 +85,7 @@ export const RecipeForm = () => {
           className={classes.addPartButton}
           variant="contained"
           color="secondary"
-          startIcon={<Send />}
+          startIcon={<Creation />}
           onClick={() => store.submit()}>
           Make Recipe
         </Button>
@@ -97,17 +97,22 @@ export const RecipeForm = () => {
       )}
       {store.url && (
           <Fragment>
+              <Typography className={classes.label} component="label" variant="body1">
+                Fresh Bike Recipe!
+              </Typography>
               <Preview />
-              <Button
-                fullWidth
-                className={classes.addPartButton}
-                variant="contained"
-                color="secondary"
-                startIcon={<Send />}
-                href={store.url}
-                download="recipe.png">
-                Save Recipe
-            </Button>
+              <Box marginRight={isLargeScreen ? '50%' : 0}>
+                <Button
+                  fullWidth
+                  className={classes.addPartButton}
+                  variant="contained"
+                  color="secondary"
+                  startIcon={<Download />}
+                  href={store.url}
+                  download="recipe.png">
+                  Download Image
+              </Button>
+              </Box>
           </Fragment>
       )}
     </Fragment>
