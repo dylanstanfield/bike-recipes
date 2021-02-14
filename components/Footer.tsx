@@ -22,7 +22,7 @@ export const Footer: React.FC = () => {
     <Box className={classes.container}>
       <Typography className={classes.text} component="footer" variant="caption">
         I built this website to try distract myself from building more bikes...
-        <Box className={classes.copyright}>Copyright © {new Date().getFullYear()}, <Link href="https://www.instagram.com/dylstanfield/">Dylan Stanfield</Link></Box>
+        <Box className={classes.copyright}>Copyright © {new Date().getFullYear()}, <Link href="https://www.instagram.com/sdstanfield/">Dylan Stanfield</Link></Box>
       </Typography>
     </Box>
   )
