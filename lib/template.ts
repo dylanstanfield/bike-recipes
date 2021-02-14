@@ -2,14 +2,14 @@ import twemoji from 'twemoji'
 
 import { sanitize } from './sanitize'
 
-import VulfMono from '../_fonts/Vulf-Mono-Regular.woff'
-import VulfMonoItalic from '../_fonts/Vulf-Mono-Italic.woff'
-import VulfMonoBold from '../_fonts/Vulf-Mono-Bold.woff'
-import VulfMonoBoldItalic from '../_fonts/Vulf-Mono-Bold-Italic.woff'
-import InterRegular from '../_fonts/Inter-Regular.woff2'
-import InterBold from '../_fonts/Inter-Bold.woff2'
-import VeraMono from '../_fonts/Vera-Mono.woff2'
-import { Recipe } from '../../../types/schema'
+import VulfMono from '../fonts/vulf-mono/Vulf-Mono-Regular.woff'
+import VulfMonoItalic from '../fonts/vulf-mono/Vulf-Mono-Italic.woff'
+import VulfMonoBold from '../fonts/vulf-mono/Vulf-Mono-Bold.woff'
+import VulfMonoBoldItalic from '../fonts/vulf-mono/Vulf-Mono-Bold-Italic.woff'
+import InterRegular from '../fonts/inter/Inter-Regular.woff2'
+import InterBold from '../fonts/inter/Inter-Bold.woff2'
+import VeraMono from '../fonts/vera-mono/Vera-Mono.woff2'
+import { Recipe } from '../types/schema'
 
 const twOptions = { folder: 'svg', ext: '.svg' }
 const emojify = (text: string) => twemoji.parse(text, twOptions)

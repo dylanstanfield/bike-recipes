@@ -2,10 +2,10 @@ import { NextApiRequest, NextApiResponse } from 'next'
 import pino from 'pino-http'
 import { parse } from 'url'
 
-import { html } from './_lib/template'
-import { screenshot } from './_lib/screenshot'
-import { validateRecipe } from './_lib/schema/recipe'
-import { Recipe } from '../../types/schema'
+import { html } from '../lib/template'
+import { screenshot } from '../lib/screenshot'
+import { validateRecipe } from '../lib/schema/recipe'
+import { Recipe } from '../types/schema'
 
 const logger = pino()
 const isDev = !process.env.AWS_REGION

@@ -1,7 +1,7 @@
 import puppeteer, { Page } from 'puppeteer-core'
 import chrome from 'chrome-aws-lambda'
 
-import { FileType } from '../../../types/schema'
+import { FileType } from '../types/schema'
 
 let cachedPage: Page | undefined
 const { platform } = process

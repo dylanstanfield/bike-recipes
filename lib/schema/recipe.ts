@@ -1,5 +1,5 @@
 import { object, string, array } from 'yup'
-import { Recipe } from '../../../../types/schema'
+import { Recipe } from '../../types/schema'
 
 const schema = object().shape({
   name: string(),
