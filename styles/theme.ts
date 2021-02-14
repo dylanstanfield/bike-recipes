@@ -1,9 +1,9 @@
 import { createMuiTheme, lighten } from '@material-ui/core/styles'
 
-import VulfMonoRegularWoff from '../fonts/vulf-mono/Vulf-Mono-Regular.woff'
-import VulfMonoItalicWoff from '../fonts/vulf-mono/Vulf-Mono-Italic.woff'
-import VulfMonoBlackWoff from '../fonts/vulf-mono/Vulf-Mono-Black.woff'
-import VulfMonoBlackItalicWoff from '../fonts/vulf-mono/Vulf-Mono-Black-Italic.woff'
+import VulfMonoRegularWoff from '../fonts/vulf-mono/Vulf-Mono-Regular'
+import VulfMonoItalicWoff from '../fonts/vulf-mono/Vulf-Mono-Italic'
+import VulfMonoBlackWoff from '../fonts/vulf-mono/Vulf-Mono-Black'
+import VulfMonoBlackItalicWoff from '../fonts/vulf-mono/Vulf-Mono-Black-Italic'
 
 export const navy = '#00022e'
 export const olive = '#6B6A4E'
@@ -15,7 +15,7 @@ const VulfMonoRegular = {
   fontStyle: 'normal',
   fontWeight: 400,
   src: `
-    url(${VulfMonoRegularWoff}) format('woff')
+    url(data:font/woff;charset=utf-8;base64,${VulfMonoRegularWoff}) format('woff')
   `,
 }
 
@@ -24,7 +24,7 @@ const VulfMonoItalic = {
   fontStyle: 'italic',
   fontWeight: 400,
   src: `
-    url(${VulfMonoItalicWoff}) format('woff')
+    url(data:font/woff;charset=utf-8;base64,${VulfMonoItalicWoff}) format('woff')
   `,
 }
 
@@ -33,7 +33,7 @@ const VulfMonoBold = {
   fontStyle: 'bold',
   fontWeight: 700,
   src: `
-    url(${VulfMonoBlackWoff}) format('woff2')
+    url(data:font/woff;charset=utf-8;base64,${VulfMonoBlackWoff}) format('woff')
   `,
 }
 
@@ -42,7 +42,7 @@ const VulfMonoBlack = {
   fontStyle: 'bolder',
   fontWeight: 900,
   src: `
-    url(${VulfMonoBlackWoff}) format('woff2')
+    url(data:font/woff;charset=utf-8;base64,${VulfMonoBlackWoff}) format('woff')
   `,
 }
 
@@ -51,7 +51,7 @@ const VulfMonoBlackItalic = {
   fontStyle: 'italic',
   fontWeight: 900,
   src: `
-    url(${VulfMonoBlackItalicWoff}) format('woff2')
+    url(data:font/woff;charset=utf-8;base64,${VulfMonoBlackItalicWoff}) format('woff')
   `,
 }
 

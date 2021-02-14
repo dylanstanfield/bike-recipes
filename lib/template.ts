@@ -2,13 +2,13 @@ import twemoji from 'twemoji'
 
 import { sanitize } from './sanitize'
 
-import VulfMono from '../fonts/vulf-mono/Vulf-Mono-Regular.woff'
-import VulfMonoItalic from '../fonts/vulf-mono/Vulf-Mono-Italic.woff'
-import VulfMonoBold from '../fonts/vulf-mono/Vulf-Mono-Bold.woff'
-import VulfMonoBoldItalic from '../fonts/vulf-mono/Vulf-Mono-Bold-Italic.woff'
-import InterRegular from '../fonts/inter/Inter-Regular.woff2'
-import InterBold from '../fonts/inter/Inter-Bold.woff2'
-import VeraMono from '../fonts/vera-mono/Vera-Mono.woff2'
+import VulfMono from '../fonts/vulf-mono/Vulf-Mono-Regular'
+import VulfMonoItalic from '../fonts/vulf-mono/Vulf-Mono-Italic'
+import VulfMonoBold from '../fonts/vulf-mono/Vulf-Mono-Bold'
+import VulfMonoBoldItalic from '../fonts/vulf-mono/Vulf-Mono-Bold-Italic'
+import InterRegular from '../fonts/inter/Inter-Regular'
+import InterBold from '../fonts/inter/Inter-Bold'
+import VeraMono from '../fonts/vera-mono/Vera-Mono'
 import { Recipe } from '../types/schema'
 
 const twOptions = { folder: 'svg', ext: '.svg' }
@@ -33,43 +33,43 @@ const css = (theme: string, fontSize: string): string => {
       font-family: 'Vulf Mono';
       font-style:  normal;
       font-weight: normal;
-      src: url(${VulfMono}) format('woff');
+      src: url(data:font/woff;charset=utf-8;base64,${VulfMono}) format('woff');
     }
     @font-face {
       font-family: 'Vulf Mono';
       font-style:  italic;
       font-weight: normal;
-      src: url(${VulfMonoItalic}) format('woff');
+      src: url(data:font/woff;charset=utf-8;base64,${VulfMonoItalic}) format('woff');
     }
     @font-face {
       font-family: 'Vulf Mono';
       font-style:  normal;
       font-weight: bold;
-      src: url(${VulfMonoBold}) format('woff');
+      src: url(data:font/woff;charset=utf-8;base64,${VulfMonoBold}) format('woff');
     }
     @font-face {
       font-family: 'Vulf Mono';
       font-style:  italic;
       font-weight: bold;
-      src: url(${VulfMonoBoldItalic}) format('woff');
+      src: url(data:font/woff;charset=utf-8;base64,${VulfMonoBoldItalic}) format('woff');
     }
     @font-face {
         font-family: 'Inter';
         font-style:  normal;
         font-weight: normal;
-        src: url(${InterRegular}) format('woff2');
+        src: url(data:font/woff;charset=utf-8;base64,${InterRegular}) format('woff2');
     }
     @font-face {
         font-family: 'Inter';
         font-style:  normal;
         font-weight: bold;
-        src: url(${InterBold}) format('woff2');
+        src: url(data:font/woff;charset=utf-8;base64,${InterBold}) format('woff2');
     }
     @font-face {
         font-family: 'Vera';
         font-style: normal;
         font-weight: normal;
-        src: url(${VeraMono})  format("woff2");
+        src: url(data:font/woff;charset=utf-8;base64,${VeraMono})  format("woff2");
       }
     html, body {
         background: ${background};
