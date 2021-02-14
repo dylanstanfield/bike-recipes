@@ -1,7 +1,7 @@
 import { Box, makeStyles, Theme, lighten, useMediaQuery, useTheme } from '@material-ui/core'
 import { Wifi, SignalCellular3, PlusBoxOutline, HeartOutline, SendOutline, MessageOutline, BookmarkOutline, AccountCircleOutline, DotsHorizontal } from 'mdi-material-ui'
 
-import { offwhite, olive } from '../../../styles/theme'
+import { offwhite, olive } from '../styles/theme'
 import { useStore } from './useStore'
 
 const useStyles = makeStyles((theme: Theme) => ({

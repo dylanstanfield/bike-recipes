@@ -1,5 +1,11 @@
-function IndexPage() {
-  return <div>index</div>
-}
+import { Fragment } from 'react'
 
-export default IndexPage
+import { RecipeForm } from '../components/RecipeForm'
+
+const RecipePage = () => (
+  <Fragment>
+      <RecipeForm />
+  </Fragment>
+)
+
+export default RecipePage
